@@ -46,7 +46,7 @@ Runtime Data Area 메모리영역에 적재된 클래스파일(바이트코드)�
 - Type 정보: `class` or `interface`
 - Constant Pool: 문자 상수, 타입, 필드, 객체 참조
 - static 변수
-- final class, 변수
+- final class 변수
 
 위 데이터들이 생성되는 영역
 
@@ -75,3 +75,7 @@ Example ex = new Example();
 
 네이티브 코드를 수행하기 위한 스택 장소
 (C, C++ -> JNI)
+
+
+## Reference
+- https://jeong-pro.tistory.com/148 
