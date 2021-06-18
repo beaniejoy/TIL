@@ -1,7 +1,6 @@
-# Java & Object Oriented Programming
+# Java Backend
 
 자바진영, OOP 공부내용 정리
-`since 21.05.16`
 
 - Java
   - Java 개념, 역사
