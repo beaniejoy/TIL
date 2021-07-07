@@ -16,6 +16,8 @@ JVM
 - 자바 바이트 코드(`.class`) 실행 주체
 - CPU, OS종류에 관계없이 실행 가능하게 해준다.
 
+![img1 daumcdn](https://user-images.githubusercontent.com/41675375/124784848-49640900-df81-11eb-9022-09e4eae51096.png)
+
 ### Class Loader
 
 class 파일 자체가 바이트코드라 해서 기계가 이해하는 기계어 X
