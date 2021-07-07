@@ -63,6 +63,8 @@ GC 튜닝은 Minor GC 영역을 늘린다던가, 두 개의 Survivor 영역간�
 
 ### Old 영역
 
+- 기본적으로 데이터가 가득차면 Old 영역 GC 발생
+- 여러 GC 방식에 따라 처리 절차가 달라짐
 
 ## Garbage Collector Algorithms
 GC가 동작하는 방식  
@@ -101,9 +103,7 @@ GC는 어떻게 객체의 참조 연결이 끊어졌다는 것을 인식하고 �
 - 단점
   - 기존 Mark and Sweep에서 Compact과정이 추가되어 부가적인 오버헤드 발생
 
-### Copying Algorithm
-
-### Generational Algorithm
+이외에도 `Copying Algorithm`, `Generational Algorithm` 방식이 존재
 
 ## Reference
 - [GC 설명(Naver)](https://d2.naver.com/helloworld/1329)
