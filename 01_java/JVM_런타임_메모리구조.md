@@ -79,5 +79,33 @@ Example ex = new Example();
 (C, C++ -> JNI)
 
 
+## JDK8 버전에서의 메모리 구조 변화
+
+- JDK8 이전
+```
+<----- Java Heap ----->             <--- Native Memory --->
++------+----+----+-----+-----------+--------+--------------+
+| Eden | S0 | S1 | Old | Permanent | C Heap | Thread Stack |
++------+----+----+-----+-----------+--------+--------------+
+                        <--------->
+                       Permanent Heap
+S0: Survivor 0
+S1: Survivor 1
+```
+- JDK8 이후
+```
+<----- Java Heap -----> <--------- Native Memory --------->
++------+----+----+-----+-----------+--------+--------------+
+| Eden | S0 | S1 | Old | Metaspace | C Heap | Thread Stack |
++------+----+----+-----+-----------+--------+--------------+
+```
+
+- JDK8 이전에는 PermGen 영역의 제한으로 JVM이 프로세스를 돌릴 때 메모리 상한선이 존재했음
+- 이 상한선을 넘는 코드작업이 이루어지면 `java.lang.OutOfMemoryError` 에러발생으로 프로세스가 죽어버리는 일이 자주 발생
+- PermGen영역을 없애고 Metaspace를 적용해 Native 메모리 영역에서 관리되도록 했음
+- Native 메모리 영역은 OS가 자동으로 크기를 조절, 자바 개발하면서 메모리 크기에 대한 상한선을 고려하지 않아도 됨
+- 기존 PermGen에 속해있던 `static Object`는 Heap 영역으로 이동 -> **GC의 대상이 되었음**
+
 ## Reference
 - https://jeong-pro.tistory.com/148 
+- [PermGen, Metaspace로의 구조 변화](https://johngrib.github.io/wiki/java8-why-permgen-removed/)

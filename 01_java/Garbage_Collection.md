@@ -17,6 +17,8 @@ GC 튜닝은 Minor GC 영역을 늘린다던가, 두 개의 Survivor 영역간�
 
 ## 구조
 
+![99A1DD3C5C91949304](https://user-images.githubusercontent.com/41675375/125792590-e5c34f40-773b-4a0b-bfc6-62a8c058cc10.png)
+
 ### Young Generation 영역
 - 새로 생성된 객체 대부분이 여기에 위치
 - 이 영역에서 객체가 사라질 때 `Minor GC` 발생
@@ -31,10 +33,10 @@ GC 튜닝은 Minor GC 영역을 늘린다던가, 두 개의 Survivor 영역간�
 ### Permanent Generation 영역
 - PermGen
 - Method Area라고도 함
-- 객체나 문자열 정보 저장하는 장소
+- `문자열(String)` 정보, `Method 메타정보`, `static 변수`, `상수 정보`들이 저장
 - 이름처럼 영원히 남아있는 곳은 아님
 - 여기서 GC가 발생할 수 있는데, Major GC 횟수에 포함
-- JDK7 까지 해당, JDK8 부터는 `metaspace`로 바뀜
+- JDK7 까지 해당, JDK8 부터는 `metaspace`로 바뀜 ([해당 이슈는 링크 참조](https://github.com/beaniejoy/java-backend-note/blob/main/01_java/JVM_%EB%9F%B0%ED%83%80%EC%9E%84_%EB%A9%94%EB%AA%A8%EB%A6%AC%EA%B5%AC%EC%A1%B0.md))
 
 ### Card Table
 - Old 영역에 있는 객체가 Young 영역 객체를 참조하는 경우가 발생한 경우 사용
