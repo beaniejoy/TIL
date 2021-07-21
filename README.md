@@ -6,5 +6,5 @@ Java Backend를 위한 포괄적인 내용 정리 Repository
 - Servlet/JSP
 - Spring
 - OOP
-- Web(추후)
+- Web
 - DB(추후)
