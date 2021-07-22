@@ -17,7 +17,7 @@
 
 ### Hashing Algorithms
 
-- 
+- (작성중)
 
 ### Least Connection
 
