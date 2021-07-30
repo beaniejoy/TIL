@@ -108,3 +108,36 @@ A very simple HTML page
 - 기존에 Plain Text(평문)를 사용하고, 개행으로 구별되던 `HTTP/1.x` 프로토콜과 달리, `HTTP/2.0`에서는 바이너리 포멧으로 인코딩 된 Message, Frame으로 구성된다.
 - HTTP Header Data Compression (HTTP 헤더 데이터 압축)
 
+## 📌 HTTP, HTTPS
+
+- `HTTP`: **H**yper**T**ext **T**ransfer **P**rotocol
+- `HTTPS`: **H**yper**T**ext **T**ransfer **P**rotocol over **S**ecure
+
+HTTP는 서버에 요청을 보내고 그 응답데이터를 브라우저에 보내는 방식으로 작동하는데 중간에 해커가 이를 가로채면 데이터가 쉽게 도난당할 수 있다는 문제점이 있었다.  
+
+HTTPS는 이러한 도난의 문제를 극복하고자 SSL(보안 소켓 계층)을 사용함으로써 보안을 강화한 형태로 요청, 응답을 주고받을 수 있게 했습니다.
+
+`SSL`: 서버와 브라우저 사이에 안전하게 암호화된 연결을 만들 수 있게 도와주고, 서버 브라우저가 민감한 정보를 주고받을 때 이것이 도난당하는 것을 막아준다.
+
+HTTPS의 핵심은 개인키/공개키 암호화, 복호화 방식에 있다. ([링크 참고](https://mangkyu.tistory.com/98))
+
+## 📌 Connection
+
+HTTP에서의 TCP 연결의 형태
+
+![HTTP1_x_Connections](https://user-images.githubusercontent.com/41675375/127663046-e3c55e5a-3612-46d8-8ca5-7014d9281192.png)
+
+- `단기 커넥션`
+  - `HTTP/1.0`에서는 이러한 지속적인 TCP 커낵션의 효율을 사용하지 못해서 최적의 상태가 아님  
+- `영속적인 커넥션`
+  - TCP handshaking에서 비용이 발생하기는 하지만 TCP 커낵션은 지속적으로 연결되었을 때 부하에 맞춰 더욱 예열되어 더욱 효율적으로 작동
+  - `HTTP/1.1`은 영속적인 커넥션 TCP handshaking와 커넥션 지속에 따른 효율 두마리 토끼를 다 잡을 수 있음 (`keep-alive`)
+  - 영속적인 커넥션은 유휴 상태일 때에도 서버 리소스를 계속 사용하기 때문에 과부하 상태에서는 `DoS attack`에 취약할 수 있다.  
+   (커넥션이 유휴 상태가 되자마자 비영속적 커넥션을 사용하는 것이 성능에 좋을 수 있음)
+- `파이프라이닝`
+  - 같은 영속적인 커넥션을 통해 응답을 기다리지 않고 요청을 연속적으로 보내는 기능
+  - 이전에는 현재 요청에 대한 응답을 받고 그 이후 다음 요청 수행  
+  → 네트워크 지연, 대역폭 제한에 걸려 다음 요청을 보내는데 상당한 delay 발생 가능
+  - 파이프라이닝에서는 이전 응답을 기다리지 않고 요청을 연속적으로 보낼 수 있음
+  - 하지만 실제로 이것을 지원하기에는 많은 프록시와 서버들에 제한이 존재
+- [관련 설명 링크](https://developer.mozilla.org/ko/docs/Web/HTTP/Connection_management_in_HTTP_1.x)
