@@ -55,6 +55,7 @@ public class Node {
 - 중간에 데이터 추가 or 중간에 있는 데이터를 삭제하는 경우 `LinkedList`가 빠름  
 (`LinkedList`는 노드 간 연결만 다시 설정하면 되지만 `ArrayList`는 하나의 데이터 때문에 그 뒤에 있는 모든 데이터들을 재배치해야됨)
 - 중간 데이터 추가하는 경우는 `LinkedList`도 `O(n)`, 해당 index까지 탐색하는데 비용 발생
+- 출처: https://girawhale.tistory.com/8
 
 ## 정리
 
