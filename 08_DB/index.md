@@ -36,3 +36,4 @@ CPU - Cache Memory - Main Memory - HDD
 - Balanced Tree 구조 (Not Binary)
 - 이진 트리 형태의 보완된 구조  
   (이진 트리형태는 한쪽으로 치우쳐진 그림도 가능하기에 검색에서 비효율적인 구조 발생 가능)
+  
