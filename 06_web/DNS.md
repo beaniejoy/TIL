@@ -15,11 +15,11 @@
 
 DNS 서버는 UDP 프로토콜 위에서 작동한다.
 
-> Why DNS servers use UDP protocol as the transport layer?  
+Why DNS servers use UDP protocol as the transport layer?  
 [stackoverflow link](https://stackoverflow.com/questions/40063374/why-dns-uses-udp-as-the-transport-layer-protocol)  
-> 1. UDP is much faster. TCP is slow as it requires 3 way handshake. The load on DNS servers is also an important factor. DNS servers (since they use UDP) don’t have to keep connections.  
-UDP가 TCP보다 빠르다. 3-way handshaking 과정을 통한 커넥션 확보 과정을 거치지 않아도 된다. DNS는 사실 커넥션을 유지할 필요가 없기도 하다.
-> 2. DNS requests are generally very small and fit well within UDP segments.  
-DNS 요청 정보내용은 아주 작아서 UDP 세그먼트에 잘 들어간다.
-> 3. UDP is not reliable, but reliability can be added on application layer. An application can use UDP and can be reliable by using timeout and resend at application layer.  
-UDP는 신뢰성에 있어서 떨어지지만 충분히 application layer에서 보완할 수 있다.
+1. UDP is much faster. TCP is slow as it requires 3 way handshake. The load on DNS servers is also an important factor. DNS servers (since they use UDP) don’t have to keep connections.  
+**UDP가 TCP보다 빠르다. 3-way handshaking 과정을 통한 커넥션 확보 과정을 거치지 않아도 된다. DNS는 사실 커넥션을 유지할 필요가 없기도 하다.**
+2. DNS requests are generally very small and fit well within UDP segments.  
+**DNS 요청 정보내용은 아주 작아서 UDP 세그먼트에 잘 들어간다.**
+3. UDP is not reliable, but reliability can be added on application layer. An application can use UDP and can be reliable by using timeout and resend at application layer.  
+**UDP는 신뢰성에 있어서 떨어지지만 충분히 application layer에서 보완할 수 있다.**
