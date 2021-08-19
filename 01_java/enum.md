@@ -4,30 +4,36 @@
 
 ```java
 public enum OrderStatus {
-  COMPLETED("주문완료"),
-  PAYMENT_WAITING("결제대기", OrderStatus.COMPLETED.status),
-  PAYMENT_COMPLETED("결제완료", OrderStatus.PAYMENT_WAITING.status),
-  ARRANGED("배송준비", OrderStatus.PAYMENT_COMPLETED.status),
-  DELIVERY("배송중", OrderStatus.ARRANGED.status),
-  ARRIVAL("배송완료", OrderStatus.DELIVERY.status),
-  CANCELED("주문취소",
-          OrderStatus.COMPLETED.status,
+  CANCELED("주문취소"),
+  ARRIVAL("배송완료"),
+  DELIVERY("배송중",
+          OrderStatus.ARRIVAL.status),
+  ARRANGED("배송준비",
+          OrderStatus.DELIVERY.status),
+  PAYMENT_COMPLETED("결제완료",
+          OrderStatus.ARRANGED.status,
+          OrderStatus.CANCELED.status),
+  PAYMENT_WAITING("결제대기",
           OrderStatus.PAYMENT_COMPLETED.status,
-          OrderStatus.PAYMENT_COMPLETED.status,
-          OrderStatus.ARRANGED.status);
+          OrderStatus.CANCELED.status),
+  COMPLETED("주문완료",
+          OrderStatus.PAYMENT_WAITING.status,
+          OrderStatus.CANCELED.status);
 
   private final String status;
-  private final Set<String> handlingStatusList;
+  private final Set<String> covertToList;
 
-  OrderStatus(String status, String... handlingStatus) {
+  OrderStatus(String status, String... covertToStatus) {
       this.status = status;
-      this.handlingStatusList = new HashSet<>(Arrays.asList(handlingStatus));
+      this.covertToList = new HashSet<>(Arrays.asList(covertToStatus));
   }
 
   //...
   
 }
 ```
+enum class는 enum 상수의 순서가 있어서 먼저선언된 상수 내부에 뒤에 나올 상수내용을 적용하려하면 에러 발생한다.
+(ordinal 존재, 순서 지켜야함)
 
 ## Reference
 
