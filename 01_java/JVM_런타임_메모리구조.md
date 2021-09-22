@@ -106,6 +106,26 @@ S1: Survivor 1
 - Native 메모리 영역은 OS가 자동으로 크기를 조절, 자바 개발하면서 메모리 크기에 대한 상한선을 고려하지 않아도 됨
 - 기존 PermGen에 속해있던 `static Object`는 Heap 영역으로 이동 -> **GC의 대상이 되었음**
 
+### Permanent Generation (PermGen)
+```
+The JVM keeps track of loaded class metadata in the PermGen.
+```
+- JDK 7버전까지 있었던 PermGen 영역에서 관리했던 내용은 다음과 같다.
+  - static methods
+  - primitive variables
+  - references to the static object
+  - String Pool도 permgen에서 관리
+  - (bytecode data)
+  - (JIT information)
+- default max memory size: 
+  - 32-bit JVM - 64MB
+  - 64-bit JVM - 82MB
+- option(deprecated)
+  - `-XX:PermSize=[size]`: initial or minimum size setting
+  - `-XX:MaxPermSize=[size]`: maximum size setting
+- 여기서 `OutOfMemoryError`가 자주 발생했었음
+
+
 ## Reference
 - https://jeong-pro.tistory.com/148 
 - [PermGen, Metaspace로의 구조 변화](https://johngrib.github.io/wiki/java8-why-permgen-removed/)
