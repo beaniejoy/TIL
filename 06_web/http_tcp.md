@@ -107,6 +107,7 @@ A very simple HTML page
 
 - 기존에 Plain Text(평문)를 사용하고, 개행으로 구별되던 `HTTP/1.x` 프로토콜과 달리, `HTTP/2.0`에서는 바이너리 포멧으로 인코딩 된 Message, Frame으로 구성된다.
 - HTTP Header Data Compression (HTTP 헤더 데이터 압축)
+- [HTTP/2 관련 설명](https://velog.io/@taesunny/HTTP2HTTP-2.0-%EC%A0%95%EB%A6%AC)
 
 ## 📌 HTTP, HTTPS
 
