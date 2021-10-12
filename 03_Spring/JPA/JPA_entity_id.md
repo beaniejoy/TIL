@@ -13,11 +13,16 @@ private Long reviewCountId;
 ```
 
 ## UUID
-
+- UUID 자동생성
 ```java
 @Id
 @GeneratedValue(generator = "uuid2")
 @GenericGenerator(name = "uuid2", strategy = "uuid2")
 @Column(name = "history_id", columnDefinition = "BINARY(16)")
 private UUID historyId;
+```
+
+- 쿼리 조회시
+```sql
+SELECT hex(history_id) FROM history;
 ```
