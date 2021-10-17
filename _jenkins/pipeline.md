@@ -34,6 +34,7 @@ pipeline {
         }
     }
 }
+```
 
 ### Scripted Pipeline
 
