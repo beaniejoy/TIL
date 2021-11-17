@@ -27,6 +27,44 @@ answer = 42
 
 ### 스마트 캐스트(smart cast)
 
+```kt
+interface Expr
+class Num(val value: Int) : Expr
+class Sum(val left: Expr, val right: Expr) : Expr
+
+fun eval(e: Expr): Int {
+    if (e is Num) {
+        val n = e as Num
+        return n.value
+    }
+    if (e is Sum) {
+        return eval(e.right) + eval(e.left)
+    }
+
+    throw IllegalArgumentException("unknown expression")
+}
+
+fun main() {
+    println(eval(Sum(Sum(Num(1), Num(2)), Num(4))))
+}
+```
+- 코틀린은 타입 캐스팅을 생략해도 된다.
+- 코틀린 컴파일러가 캐스팅을 수행해준다. -> `스마트 캐스트`
+
+```java
+public class EvalUtil {
+    public int eval(Expr e) {
+        if (e instanceof Num) {
+            return ((Num) e).getValue();
+        }
+        if (e instanceof Sum) {
+            return eval(((Sum) e).getRight()) + eval(((Sum) e).getLeft());
+        }
+        throw new IllegalArgumentException("unknown expression");
+    }
+}
+```
+- 자바는 인터페이스 상속 받은 객체 고유의 접근자를 호출할 때 타입 캐스팅을 해야 한다.
 
 ## Java -> Kotlin 내용
 
