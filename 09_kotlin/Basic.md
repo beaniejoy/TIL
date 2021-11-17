@@ -27,6 +27,21 @@ answer = 42
 
 ### 스마트 캐스트(smart cast)
 
+```java
+public class EvalUtil {
+    public int eval(Expr e) {
+        if (e instanceof Num) {
+            return ((Num) e).getValue();
+        }
+        if (e instanceof Sum) {
+            return eval(((Sum) e).getRight()) + eval(((Sum) e).getLeft());
+        }
+        throw new IllegalArgumentException("unknown expression");
+    }
+}
+```
+- 자바는 인터페이스 상속 받은 객체 고유의 접근자를 호출할 때 타입 캐스팅을 해야 한다.
+
 ```kt
 interface Expr
 class Num(val value: Int) : Expr
@@ -50,21 +65,11 @@ fun main() {
 ```
 - 코틀린은 타입 캐스팅을 생략해도 된다.
 - 코틀린 컴파일러가 캐스팅을 수행해준다. -> `스마트 캐스트`
-
-```java
-public class EvalUtil {
-    public int eval(Expr e) {
-        if (e instanceof Num) {
-            return ((Num) e).getValue();
-        }
-        if (e instanceof Sum) {
-            return eval(((Sum) e).getRight()) + eval(((Sum) e).getLeft());
-        }
-        throw new IllegalArgumentException("unknown expression");
-    }
-}
-```
-- 자바는 인터페이스 상속 받은 객체 고유의 접근자를 호출할 때 타입 캐스팅을 해야 한다.
+- 스마트 캐스트는 `is`(java에서는 `instanceof` 격)로 변수에 든 타입을 검사한 후 컴파일러가 자동으로 타입 캐스팅을 수행해준다.
+> `is`가 제대로 작동되기 위해서는
+> - 검사한 후 값이 바뀔 수 없는 경우에 작동(`e is Num`에서 `e`는 `val`로 선언되어야 한다.)
+> - 커스텀 접근자를 사용한 것이어도 안된다.
+> - 원하는 타입으로 명시적으로 타입 캐스팅하려면 `as` 사용 (`val n = e as Num`)
 
 ## Java -> Kotlin 내용
 
