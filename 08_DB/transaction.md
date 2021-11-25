@@ -69,18 +69,7 @@ ROLLBACK;
 - `dirty read`, `non-repeatable read`, `phantom read` 발생할 가능성이 가장 적다.
 - `DEAD LOCK`(교착 상태)에 빠질 가능성이 상당히 높아서 주의해서 사용
 
-```sql
--- Transaction A.
-START TRANSACTION;
-UPDATE 
+## MySQL InnoDB 특징
 
--- Transaction B. (READ UNCOMMITED)
-SELECT * FROM member WHERE id = 1;
-
--- Transaction A.
-ROLLBACK;
-```
-
-> MySQL InnoDB commit 특징
-> - InnoDB는 일단 실행된 모든 쿼리를 DB에 적용한다.(commit 상관없이)
-> - 그래서 Consistent Read를 위해 log에 기록하고 log를 통해 특정 시점의 DB snapshot을 복구해서 가져와야 한다.
+- InnoDB는 일단 실행된 모든 쿼리를 DB에 적용한다.(commit 상관없이)
+- 그래서 Consistent Read를 위해 log에 기록하고 log를 통해 특정 시점의 DB snapshot을 복구해서 가져와야 한다.
