@@ -23,7 +23,11 @@
 > 동시에 여러 트랜잭션이 데이터를 변경하거나 조회할 때, 한 트랜잭션의 작업 내용이 다른 트랜잭션에 어떻게 보여질지를 결정하는 기준
 
 - ACID 원칙을 strict하게 지키기가 힘들다 -> 동시성이 매우 떨어짐
-- transaction isolation 전략을 통해 ACID를 적절히 희생해 동시성을 얻을 수 있다.
+- **transaction isolation 전략을 통해 ACID를 적절히 희생해 동시성을 얻을 수 있다.**
+- 여기서 발생할 수 있는 세 가지 문제 상황 존재
+  - `dirty read`: 다른 트랜잭션에서 COMMIT 되지 않은 데이터를 읽어옴(신뢰성 하락)
+  - `non-repeatable read`: 한 트랜잭션 내부에서 여러번 SELECT 쿼리를 실행했을 때 일관성 있는 결과가 안나옴
+  - `phantom read`: 한 트랜잭션 내부에서 SELECT 여러번 진행했을 시 이전에 없던 row가 읽혀오는 상황
 
 ### READ UNCOMMITED
 
@@ -41,10 +45,7 @@ SELECT * FROM member WHERE id = 1;
 ROLLBACK;
 ```
 - `Tx B.` 에서 존재하지도 않는 데이터를 읽어들인 셈이다.(`Dirty Read`)
-
-> MySQL InnoDB commit 특징
-> - InnoDB는 일단 실행된 모든 쿼리를 DB에 적용한다.(commit 상관없이)
-> - 그래서 Consistent Read를 위해 log에 기록하고 log를 통해 특정 시점의 DB snapshot을 복구해서 가져와야 한다.
+- 이외에도 `Non-repeatable Read`, `Phantom Read` 발생 가능
 
 ### READ COMMITTED
 
@@ -60,8 +61,26 @@ ROLLBACK;
 > This is the default isolation level for InnoDB.  
 > Consistent reads within the same transaction read the snapshot established by the first read.
 
+- 여기서 특이한 점
+
 ###  SERIALIZABLE
 - 가장 타이트한 level
 - `SELECT` 쿼리를 모두 `SELECT ... FOR SHARE` (S Lock)으로 변환
 - `dirty read`, `non-repeatable read`, `phantom read` 발생할 가능성이 가장 적다.
 - `DEAD LOCK`(교착 상태)에 빠질 가능성이 상당히 높아서 주의해서 사용
+
+```sql
+-- Transaction A.
+START TRANSACTION;
+UPDATE 
+
+-- Transaction B. (READ UNCOMMITED)
+SELECT * FROM member WHERE id = 1;
+
+-- Transaction A.
+ROLLBACK;
+```
+
+> MySQL InnoDB commit 특징
+> - InnoDB는 일단 실행된 모든 쿼리를 DB에 적용한다.(commit 상관없이)
+> - 그래서 Consistent Read를 위해 log에 기록하고 log를 통해 특정 시점의 DB snapshot을 복구해서 가져와야 한다.
