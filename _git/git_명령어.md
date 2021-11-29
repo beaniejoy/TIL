@@ -76,3 +76,45 @@ $ git tag -a v0.1 -m "my version 0.1"
 
 $ git push origin v0.1
 ```
+
+## merge
+
+```bash
+$ git checkout -b feature/issue
+...
+$ git add .
+$ git commit -m "feature/issue now developing"
+
+$ git checkout main
+$ git checkout -b hotfix
+...
+$ git add .
+$ git commit -m "hotfix commit"
+$ git checkout main
+
+$ git merge hotfix
+Updating 0f80e77..c58ebc2
+Fast-forward
+ index.html | 3 +++
+ 1 file changed, 3 insertions(+)
+ create mode 100644 index.html
+
+$ git checkout feature/issue
+...
+$ git add .
+$ git commit -m "feature/issue completed"
+$ git checkout main
+
+$ git merge feature/issue
+CONFLICT (add/add): Merge conflict in index.html
+Auto-merging index.html
+Automatic merge failed; fix conflicts and then commit the result.
+
+(after solving the conflict)
+$ git add index.html
+$ git commit
+$ git push
+```
+- merge 하는 과정
+- conflict 발생시 해당 파일을 통합 수정해서 add
+- conflict 해결 후 commit 하면 merge에 대한 내용 기입 후 push하면 된다.
