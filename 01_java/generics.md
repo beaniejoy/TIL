@@ -3,7 +3,7 @@
 - 컴파일 시의 타입 체크를 해주는 기능(`compile-time type check`)
 - 객체 타입 안정성 높이고 형변환 번거로운 작업 생략 가능
 
-## 용어
+## :pushpin: 용어
 ```java
 class Box<T> {}
 ```
@@ -17,7 +17,7 @@ Box<String> b = new Box<String>();
 - `제네릭 타입 호출`: 타입 매개변수에 타입을 지정하는 것 (`Box<T>` -> `Box<String>`)
 - `매개변수화된 타입`(대입된 타입): 여기서 `String`
 
-## 제한 사항
+## :pushpin: 제한 사항
 
 ```java
 class Box<T> {
@@ -36,7 +36,7 @@ class Box<T> {
 - `T`는 인스턴스 변수로 간주
 - `new T[..];`: 컴파일 시점에 타입 T가 무엇인지 정확히 알아야 한다.(알 수 없음)
 
-## Generics 객체 생성 및 사용
+## :pushpin: Generics 객체 생성 및 사용
 
 ```java
 public class Fruit {...}
@@ -61,7 +61,7 @@ fruitBox.add(new Apple());  // OK. void add(Fruit item)
 ```
 - `add` 메소드의 파라미터가 Fruit 이므로 해당 상속받은 클래스의 객체를 원소로 넣을 수 있다.
 
-## Generic 클래스의 제한
+## :pushpin: Generic 클래스의 제한
 ```java
 class FruitBox<T extends Fruit> {
     List<T> list = new ArrayList<>();
@@ -74,8 +74,9 @@ class FruitBox<T extends Fruit & Eatable> {...}
 - interface를 구현한 특정 클래스 타입으로 제한하고 싶을 때도 `extends`로 사용(`implements` X)
 - `&`로 묶을 수 있다.
 
-## 와일드 카드
+## :pushpin: 와일드 카드
 
+### <? extends T>
 ```java
 class Juicer {
     static Juice makeJuice(FruitBox<Fruit> box) {
@@ -104,3 +105,29 @@ class Juicer {
 }
 ```
 - 이런 식으로 하면 타입 파라미터도 다형성처럼 사용할 수 있다.
+
+### <? super T>
+```java
+// Collections.sort()
+static <T> void sort(List<T> list, Comparator<? super T> c)
+
+// AppleComp.java
+class AppleComp implements Comparator<Apple> {
+    public int compare(Apple t1, Apple t2) {
+        return t2.weight - t1.weight;
+    }
+}
+// GrapeComp.java도 똑같이 구현
+// ...
+Collections.sort(appleBox.getList(), new AppleComp());
+Collections.sort(graphBox.getList(), new GraphComp());
+```
+- `List<Apple>`과 `List<Graph>`는 각각의 Comparator를 구현한 클래스 객체를 통해 sorting 해야 한다.
+- 이렇게 되면 각 매개변수화된 타입에 따라 새로운 Comparator 구현체를 만들어야 한다는 비효율성 발생
+
+```java
+Collections.sort(appleBox.getList(), new FruitComp());
+Collections.sort(graphBox.getList(), new FruitComp());
+```
+- `FruitComp`는 Apple, Graph의 상위 클래스인 Fruit를 타입 매개변수로 한 인터페이스의 구현체다.  
+  **이 객체 하나만으로 Fruit의 하위 클래스 타입의 제네릭 클래스에 전부 적용할 수 있다.**
