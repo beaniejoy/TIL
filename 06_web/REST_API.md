@@ -53,6 +53,28 @@
  보안 | WS-Security, SSL | [HTTPS](https://github.com/beaniejoy/TIL/blob/main/06_web/https.md), SSL
  연결 | 긴밀한 연결, 통신 방식이 엄격 | 추상화되어 있어 느슨한 연결 형태
 
+## REST API 구성 요소
+- 자원(Resource)
+  - 리소스는 서버에 존재하고 모든 자원에 고유한 ID 존재
+  - HTTP URI를 통해 자원을 구별(`/api/v1/cafes/[cafe:id]`)
+  - 클라이언트는 URI를 통해 원하는 자원을 설정하고 이를 조회, 조작하는 요청을 서버에 보낼 수 있음
+- 행위(Verb)
+  - HTTP에 기반하고 있기 때문에 HTTP프로토콜의 Method를 사용한다.
+  - GET, POST, PUT, PATCH, DELETE 기능 제공
+- 표현(Representation of Resource)
+  - 클라이언트가 자원에 대한 내용을 요청하면 서버는 이에 대한 작업을 진행해주고 적절한 응답을 보냄
+  - 하나의 자원은 JSON, XML, TEXT 등 여러 형태로 응답 표현(JSON이 대세)
+
+## 설계 규칙
+
+- 정보의 자원을 표현해야 함 (`/members/1`)
+- 행위(Method)는 URL에 포함 X (`/memeber/get/1`, `/delete-cafe` X)
+- `-`(dash) 사용, `_`(underbar) 사용 X (`/hello_java` X)
+- 마지막에 `/` 포함 X (`/users/1/` -> `/users/1`)
+- 대문자보다는 소문자가 적합
+
+
 ## 출처
 - [RedHat - API란 (개념, 기능, 장점)](https://www.redhat.com/ko/topics/api/what-are-application-programming-interfaces)
 - [위시캣 - SOAP vs REST 차이](http://blog.wishket.com/soap-api-vs-rest-api-%EB%91%90-%EB%B0%A9%EC%8B%9D%EC%9D%98-%EA%B0%80%EC%9E%A5-%ED%81%B0-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%9D%80/)
+- [RESTful API 설계 가이드 - 상세한 설명 Good](https://sanghaklee.tistory.com/57)
