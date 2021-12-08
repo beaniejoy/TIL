@@ -3,7 +3,7 @@
 - REST 아키텍처의 제약조건을 준수하는 애플리케이션 프로그래밍 인터페이스
 - `RE`presentational `S`tate `T`ransfer
 
-## API
+## 📌 API
 - `A`pplication `P`rogramming `I`nterface
 - 애플리케이션 소프트웨어를 구축하고 통합하는 정의, 프로토콜 세트
 - `정보 제공자 - 정보 사용자` 간 `호출 - 응답` 구조를 구성
@@ -13,7 +13,7 @@
   - API를 사용하는 이용자는 API 내부 동작 방식을 알지도 못하고 알 필요도 없는 상태로 요청을 보내는 방식만 알면 원하는 리소스를 응답으로 받을 수 있음
   - 사용 방법을 간소화 함으로써 여러 다양한 서비스들을 연결하고 API 내부를 수정해도 외부에는 영향을 주지 않는다는 점에서 유연한 관리가 가능
 
-## SOAP API
+## 📌 SOAP API
 - `S`imple `O`bject `A`ccess `P`rotocol
 - API에서 REST API와 더불어 같이 언급되는 SOAP API
 - 보안이나 메시지 전송에 있어 REST보다 더 많은 표준들이 정해져 있음
@@ -22,7 +22,7 @@
 - SOAP 표준에 성공/반복 실행 로직이 규정되어 있기 때문에 이를 통해 통신을 하는 경우 끝까지 신뢰성을 제공하게 됨
 - 빌트인 룰을 적용하고 있기 때문에 오버헤드가 존재, 페이지 로드 시간이 길어질 수 있음
 
-## REST API
+## 📌 REST API
 - `RE`presentational `S`tate `T`ransfer
 - URI와 HTTP 프로토콜 기반으로 함(클라이언트-서버 모델로 구축)
 - 단순하다는 장점이 있음(단일한 인터페이스를 사용하기 때문에 동일한 경로를 통해서 접속)
@@ -44,7 +44,7 @@
   - 다중 계층으로 구성할 수 있기 때문에 **유연한 구조**를 가질 수 있음
   - 보안, 로드 밸런싱, 암호화 계층을 추가한다거나 Proxy, Gateway같은 네트워크 기반 중간매체 사용 가능
 
-## SOAP, REST 방식의 차이
+## 📌 SOAP, REST 방식의 차이
 
 |  | SOAP | REST 
  :---: | :---: |:---:
@@ -53,7 +53,7 @@
  보안 | WS-Security, SSL | [HTTPS](https://github.com/beaniejoy/TIL/blob/main/06_web/https.md), SSL
  연결 | 긴밀한 연결, 통신 방식이 엄격 | 추상화되어 있어 느슨한 연결 형태
 
-## REST API 구성 요소
+## 📌 REST API 구성 요소
 - 자원(Resource)
   - 리소스는 서버에 존재하고 모든 자원에 고유한 ID 존재
   - HTTP URI를 통해 자원을 구별(`/api/v1/cafes/[cafe:id]`)
@@ -65,16 +65,69 @@
   - 클라이언트가 자원에 대한 내용을 요청하면 서버는 이에 대한 작업을 진행해주고 적절한 응답을 보냄
   - 하나의 자원은 JSON, XML, TEXT 등 여러 형태로 응답 표현(JSON이 대세)
 
-## 설계 규칙
+## 📌 설계 규칙(API Naming 가이드)
 
-- 정보의 자원을 표현해야 함 (`/members/1`)
-- 행위(Method)는 URL에 포함 X (`/memeber/get/1`, `/delete-cafe` X)
-- `-`(dash) 사용, `_`(underbar) 사용 X (`/hello_java` X)
-- 마지막에 `/` 포함 X (`/users/1/` -> `/users/1`)
+### Singleton과 Collection Resource 구분
+- customer 도메인
+- `/customers`: Collection
+- `/customers/{customerId}`: Singleton
+
+### Collection, Sub-collection Resources 구분
+- customer 도메인 안에 account 자원 존재하는 경우
+- `/customers/{customerId}/accounts`: account에 대한 collection
+- `/customers/{customerId}/accounts/{accountId}`: account에 대한 singleton
+
+### Resource Archetypes
+- REST API는 4개의 구별된 resource archetypes를 가진다.
+- `document`, `collection`, `store`, `controller`
+
+#### Document
+- 객체 인스턴스와 유사한 단일 개념
+- 단수 개의 리소스 표현
+```text
+http://api.beaniejoy.io/users/{userId}
+```
+
+#### Collection
+- 서버가 관리하는 리소스들의 묶음
+- collection을 통해 클라이언트가 새로운 리소스를 추가 요청
+```text
+http://api.beaniejoy.io/users
+```
+
+#### Store
+- 서버가 아닌 클라이언트가 관리하는 리소스
+- 클라이언트가 리소스를 따로 저장하고 삭제하고 복구할 수 있도록 허용
+```text
+http://api.beaniejoy.io/users/{userId}/playlists
+```
+
+#### Controller
+- 실행가능한 함수를 표현
+- parameter, return values를 가진 input, output을 가짐
+- 동사형으로 사용
+```text
+http://api.beaniejoy.io/users/{userId}/playlists/play
+```
+
+### Consistent Resource Naming Conventions
+- 정보의 자원을 표현해야 함
+  - `/members/1`
+- 행위(Method)는 URL에 포함하면 안됨
+  - `/memeber/get/1`, `/delete-cafe` X
+- `_`(underbar) 사용 대신 `-`(dash) 사용
+  -  `/hello_java` X -> `/hello-java` 
+- 마지막에 `/` 포함하면 안됨
+  - `/users/1/` X -> `/users/1` O
 - 대문자보다는 소문자가 적합
+- 파일 확장자를 사용하지 말자
+  - `/device/managed-devices.xml` X -> `/device/managed-devices` O
+- query component 사용
+  - collection에 대한 filtering, sorting, pagination이 필요한 경우 API 새로 만들지 말고 query component 사용할 것
+  - `/device/managed-devices?region=KR&sort=date`
 
 
-## 출처
+## References
 - [RedHat - API란 (개념, 기능, 장점)](https://www.redhat.com/ko/topics/api/what-are-application-programming-interfaces)
 - [위시캣 - SOAP vs REST 차이](http://blog.wishket.com/soap-api-vs-rest-api-%EB%91%90-%EB%B0%A9%EC%8B%9D%EC%9D%98-%EA%B0%80%EC%9E%A5-%ED%81%B0-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%9D%80/)
 - [RESTful API 설계 가이드 - 상세한 설명 Good](https://sanghaklee.tistory.com/57)
