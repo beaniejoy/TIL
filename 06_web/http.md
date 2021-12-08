@@ -1,5 +1,22 @@
 # HTTP
 
+- TCP, UDP
+  - TCP
+  - UDP
+- 인터넷 연결 과정
+- 리소스
+  - 미디어타입(MIME)
+  - URI
+  - URN
+- 트랜잭션
+
+
+## 📌 개요
+- HTTP는 HTML문서 같은 리소스들을 가져올 수 있도록 해주는 프로토콜
+- 웹에서 이루어지는 모든 데이터 교환의 기초
+- 클라이언트 - 서버 프로토콜이기도 함
+
+
 - **HTTP통신**
   - Client가 요청을 보내는 경우에만 Server가 응답하는 단방향 통신
   - Server로부터 응답을 받은 후에는 연결이 바로 종료
@@ -13,8 +30,8 @@
   - 실시간 동영상 Streaming이나 온라인 게임 등과 같은 경우에 자주 사용
 
 ## 📌 TCP, UDP
-
-IP 프로토콜 위에서 작동하는 `Transport Layer`
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http_tcp.md)  
+- IP 프로토콜 위에서 작동하는 `Transport Layer`
   
 **연결형 서비스**
 - 송신자와 수신자 사이의 논리적인 연결을 확립 
@@ -47,6 +64,7 @@ IP 프로토콜 위에서 작동하는 `Transport Layer`
 (스트리밍 서비스, 실시간 중계, 게임 등, DNS 서버도 UDP를 사용)
 
 ## 📌 인터넷 연결 과정
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http_tcp.md)
 
 > 브라우저에서 `beaniejoy.io` 에 접속하면 어떤 과정으로 접속이 이루어질까?
 
@@ -61,7 +79,131 @@ IP 프로토콜 위에서 작동하는 `Transport Layer`
 7. 해당 리로스의 전송이 완료 되면 HTTP status code(여기서는 200)와 함께 HTTP 응답 매세지를 만들고 클라이언트에 전송
 8. 💡 **[TCP 4way handshaking](https://mindnet.tistory.com/entry/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EC%89%BD%EA%B2%8C-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-22%ED%8E%B8-TCP-3-WayHandshake-4-WayHandshake)** 방식으로 커낵션을 종료
 
-## 📌 HTTP Status Code
+## 📌 리소스(Resource)
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http_tcp.md)
+- 웹 리소스 = 웹 콘텐츠의 원천
+- 정적파일: 가장 단순한 웹 서버 파일 시스템의 파일(HTML문서, Word, PDF, JPG파일, 동영상파일 등)
+- 동적파일: 동적 콘텐츠 리소스. 사용자의 정보에 따라, 요청의 정보에 따라 다른 콘텐츠를 생성(주식거래, 부동산DB 검색, 쇼핑몰 물품 구매 등)
+- 어떤 종류의 콘텐츠 소스든 리소스가 될 수 있음
+
+### 미디어 타입
+- `MIME`(Multipurpose Internet Mail Extensions): 다목적 인터넷 메일 확장
+  - 다른 전자메일 시스템 사이에서 메시지를 주고 받을 때 발생하는 문제를 해결하기 위해 설계
+- HTTP서버는 모든 HTTP 객체 데이터에 MIME 타입을 붙임
+- 웹 브라우저는 서버로부터 객체를 응답 받을 때 처리할 수 있는 객체인지 MIME 타입을 통해 확인
+```
+Content-type: image/jpeg
+Content-length: 12984
+```
+- 주타입(primary object type) / 부타입(specific subtype)
+- text/html : HTML 문서
+- text/plain : plain [ASCII](https://github.com/beaniejoy/TIL/tree/main/00_basic/ASCII.md) 텍스트 문서
+- image/jpeg
+- image/gif
+
+### URI
+
+- Uniform Resource Identifier(통합 자원 식별자, 서버 리소스 이름)
+- 웹서버 리소스는 각자 이름을 가지고 있음 - 클라이언트는 타겟 리소스를 지목할 수 있다.
+- `URI` > `URL`, `URN` 두 종류가 있다.
+
+### URL
+- Uniform Resource Locator
+- 리소스 식별자의 가장 흔한 형태
+- 서버의 리소스에 대한 구체적인 위치를 서술(리소스가 정확히 어디에 있고 어떻게 접근할 수 있는지 알려줌)
+```text
+[scheme]://[host]:[port]/[path]?[query]#[fragment]
+
+ex)
+http://beaniejoy.io/specials/hello-world.html?topic=coffe#middle
+```
+- scheme: 리소스에 접근하기 위해 사용되는 프로토콜 서술(http, ftp, ...)
+- host
+  - 리소스를 관리하는 서버의 인터넷 주소를 가리킴. DNS통한 domain name을 사용 혹은 IP address 사용
+- port: 웹서버 내의 원하는 리소스가 있는 어떤 프로그램에 접근하기 위한 관문
+- path
+  - 웹서버 내에서 자원에 대한 경로
+  - 초기 웹에서는 물리적 파일 위치 가리킴
+  - 요즘은 웹서버에서 추상화해서 보여줌
+- query
+  - 웹서버에 제공하는 추가 파라미터. 
+  - `&`기호로 구분된 키/값 짝을 이룬 리스트
+  - 웹 서버는 자원을 반환하기 전에 추가적인 작업을 위해 query parameter를 사용함
+- anchor: 일종의 bookmark. HTML 문서의 스크롤 위치, 비디오/오디오 파일의 시간 위치 등 mark
+
+### URN
+- Uniform Resource Name
+- 리소스 위치에 영향 받지 않는 유일무이한 이름 역할
+- 여러 종류의 네트워크 프로토콜로 접근한다거나, 리소스를 옮기더라도 이름만 변경하지 않으면 문제 없음
+
+## 📌 트랜잭션
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http_tcp.md)
+- HTTP 트랜잭션은 요청 명령부처 응답 결과까지 HTTP 메시지를 주고받는 한 단위를 뜻함
+
+### HTTP Method
+- 모든 요청 HTTP 메시지는 한 개의 메서드를 가짐
+
+#### GET
+- GET 요청에는 URL에 query string을 붙여 보내게 된다.
+- 민감한 데이터를 다룰 때 GET 요청을 사용하지 않는다.
+- GET 요청에는 길이 제한이 존재
+- 단순 조회 목적으로 사용(데이터 조작, 수정 X)
+```http
+/test/register?name1=value1&name2=value2
+```
+
+#### POST
+- 클라이언트에서 서버로 요청 메시지에 데이터를 담아 보낼 때 사용
+- HTTP 메시지에서 body에 담아 보내게 된다.
+- 요청 데이터 길이 제한이 없다는 특징이 있음
+- url 통한 request에 대해서 캐시 가능
+```http
+POST /test/register HTTP/1.1
+Host: beaniejoy.io
+name1=value1&name2=value2 
+```
+
+#### PUT
+- 현재 존재하는 리소스의 **전체적인 업데이트**를 하는 경우에 사용
+- REST API 관점에서 PUT은 Document 단위에서 수행함(POST는 Resource Collection에서 사용)
+```http
+PUT /cafes/1 HTTP/1.1
+Host: example.com
+Content-type: application/x-www-form-urlencoded
+Content-length: 16
+
+name1=value1&name2=value2 
+```
+- `/cafes/1` 데이터가 없는 경우 PUT 요청에 의해 성공적으로 데이터를 새로 생성함
+  - 이 때 `201`(Created) 응답코드를 반환
+```http
+HTTP/1.1 201 Created
+Content-Location: /cafes/1
+```
+- `/cafes/1` 데이터가 있는 경우 요청 데이터(body)에 근거해 수정함
+  - 성공적으로 수정시 `200`(OK), 혹은 `204`(No Content) 응답코드를 반환
+```http
+HTTP/1.1 204 No Content
+Content-Location: /cafes/1
+```
+> POST, PUT과 다른점
+> - 멱등성의 차이가 존재(POST는 멱등성 X, PUT은 멱등성 O)
+> - POST는 Resource Collection(`/cafes`), PUT은 Document 단위(`/cafes/{id}`)를 다룸(REST 명세)
+
+#### PATCH
+- PUT과 달리 리소스의 부분적인 수정을 할 때 사용(멱등성을 가지지 않을 수 있음)
+- 대부분의 웹서버, 브라우저에서 지원하지 않는다.
+```http
+PATCH /cafes/1 HTTP/1.1
+```
+
+#### DELETE
+- 리소스를 삭제하는 사용
+```http
+DELETE /cafes/1 HTTP/1.1
+```
+
+### HTTP Status Code
 
 - `1xx`: Informational : 요청 정보 처리 중
 - `2xx`: Success : 요청을 정상적으로 처리함
@@ -69,7 +211,10 @@ IP 프로토콜 위에서 작동하는 `Transport Layer`
 - `4xx`: Client Error : 서버가 요청을 이해하지 못함
 - `5xx`: Server Error : 서버가 요청 처리 실패함
 
+
 ## 📌 HTTP 버전별 특징
+
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http_tcp.md)
 
 ### HTTP/0.9
 
