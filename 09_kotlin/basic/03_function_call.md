@@ -144,7 +144,7 @@ fun String.lastChar(): Char = this.get(this.length - 1)
 ```
 - `String`: 수신 객체 타입
 - `this`: 수신 객체
-  - `this`는 확장 함수 본문에서는 생략할 수 있다.
+  - `this`는 확장 함수 본문에서는 **생략할 수 있다.**
 - 확장 함수 본문 안에서는 수신 객체 타입의 클래스 내부에서만 사용할 수 있는 private, protected 맴버에 대해서 접근할 수 없음(`캡슐화`)
 
 ### 확장함수의 import, java 호출
@@ -163,3 +163,40 @@ val c = "Kotlin".last()
 ```java
 char c = StringUtilKt.lastChar("Java");
 ```
+
+### 확장함수는 Override 할 수 없다.
+```kt
+open class View {
+  open fun click() = println("View clicked")
+}
+
+class Button: View() {
+  override fun click() = println("Button clicked")
+}
+
+>> val vie: View = Button()
+>> view.click()
+// Button clicked
+```
+- java와 같이 override 된 메소드를 호출하게 됨
+```kt
+fun View.showOff() {
+    println("View ShowOff")
+    this.click()
+}
+
+fun Button.showOff() {
+    println("Button ShowOff")
+    this.click()
+}
+
+>> val view: View = Button()
+>> view.showOff()
+// View ShowOff (정적 타입의 확장함수 호출)
+// Button clicked (동적 타입의 override 메소드 호출)
+```
+- 확장함수는 클래스 일부가 아니라 클래스 밖에서 선언되는 것
+- 수신 객체로 지정한 변수의 정적 타입에 의해 어떤 확장 함수가 호출될지 결정
+- 확장함수 내부에서 수신객체(this)에 대한 메소드 호출시 **동적인 타입(Button)의 override한 메소드가 호출된다.**
+- 또한 확장함수와 수신객체타입의 메소드 이름과 시그니처가 같은 상황에서는 확장함수가 아닌 멤버함수가 호출된다. 그렇기에 확장함수 정의할 때 신중해야 한다.  
+(멤버함수의 우선순위가 더 높다.)
