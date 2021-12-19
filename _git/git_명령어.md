@@ -99,6 +99,9 @@ Fast-forward
  1 file changed, 3 insertions(+)
  create mode 100644 index.html
 
+$ git branch -d hotfix
+Deleted branch hotfix
+
 $ git checkout feature/issue
 ...
 $ git add .
@@ -114,6 +117,9 @@ Automatic merge failed; fix conflicts and then commit the result.
 $ git add index.html
 $ git commit
 $ git push
+
+$ git branch -d feature/issue
+Deleted branch feature/issue
 ```
 - merge 하는 과정
 - conflict 발생시 해당 파일을 통합 수정해서 add
