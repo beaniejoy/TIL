@@ -56,8 +56,39 @@ class Coupon(
 - `val id: Long = 0`: default 값을 설정해줌으로써 코틀린에서 Coupon 생성자를 통해 Entity 객체 생성시 id 값 없이 생성할 수 있다.
 - 위의 no-arg 플러그인이 작동하기 때문에 기본 생성자를 알아서 만들어준다.
 
+## Entity 연관관계 주의
+```kt
+@Entity
+@Table(name = "coupon")
+class Coupon(
+    //...
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    var member: Member
+
+    //...
+) 
+
+@Entity
+@Table(name = "member")
+class Member(
+    //...
+
+    @OneToMany(mappedBy = "member")
+    var coupons: MutableList<Coupon>
+
+    //...
+)
+```
+- `@OneToMany`에서 java에서 사용했던 대로 `List<Coupon>`하면 에러 발생
+- 코틀린에서는 `MutableList`로 바꿔야 한다.
+
+
 ## 생각해볼 것들
 - Entity에는 위에서 볼 수 있듯이 특정 필드에 대해서 생성자 생성시 값을 부여하면 안되는 것들이 있다.
   - id: 보통 JPA Generation 전략을 사용하기 때문에 생성자에서 해당 값을 부여하지 않아도 된다.
   - Status: 최초 Coupon 생성 시 NORMAL로 분류해야 하기 때문에 생성자에서 default로 지정할 수 있다.
   - 이 때는 `constructor()`를 활용해도 되지 않을까?
+- 코틀린에서 중요한 차이점인 `List`, `MutableList` 차이점에 대해서 찾아보자
+  - 그리고 이게 JPA에서 어떤 영향이 있는지 알아보자
