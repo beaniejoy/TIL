@@ -3,6 +3,8 @@
 - 쉬운 함수 호출
 - 확장 함수와 확장 프로퍼티
 
+<br>
+
 ## 📌 쉬운 함수 호출
 
 ### 이름 붙인 인자
@@ -133,6 +135,8 @@ const val UNIX_LINE_SEPARATOR = "\n"
 - `const` 안 붙이면 자바에서 getter로 해당 최상위 프로퍼티를 받아야 한다.
 - `const`가 자바에서 사용되는 상수 표현과 유사하다.
 
+<br>
+
 ## 📌 확장 함수와 확장 프로퍼티
 
 - 기존 Java API의 코드를 수정하지 않고(외부 모듈에 대해서는 수정도 못하지만..) 코틀린이 제공하는 여러 편리한 기능을 사용할 수 있음
@@ -200,3 +204,57 @@ fun Button.showOff() {
 - 확장함수 내부에서 수신객체(this)에 대한 메소드 호출시 **동적인 타입(Button)의 override한 메소드가 호출된다.**
 - 또한 확장함수와 수신객체타입의 메소드 이름과 시그니처가 같은 상황에서는 확장함수가 아닌 멤버함수가 호출된다. 그렇기에 확장함수 정의할 때 신중해야 한다.  
 (멤버함수의 우선순위가 더 높다.)
+
+### 확장 프로퍼티
+
+- 실제로 확장 프로퍼티는 아무 상태도 가질 수 없음
+- 책에서는 `뒷받침하는 필드`(저장하기 위한 필드)가 없다는 표현도 있음
+```kt
+val String.lastChar: Char
+  get() = get(length - 1)
+```
+- 일반적인 프로퍼티와 비슷하고 수신 객체 클래스가 추가된 것일 뿐 (`this.get(length - 1)`)
+- 확장 프로퍼티는 최소한 getter는 정의해야 한다.
+
+```kt
+var StringBuilder.lastChar: Char
+  get() = get(length - 1)
+  set(value: Char) {
+      setCharAt(length - 1, value)
+  }
+```
+- `var`로 만들어서 setter 지정도 가능(수신 객체의 변경)
+- 자바에서 활용하려면 
+  - `ExtendsStringKt.getLastChar(new StringBuilder("Java!"));`
+
+<br>
+
+## 📌 컬렉션 처리
+- vararg
+- infix 함수 (중위 함수)
+- 구조 분해 선언
+
+### vararg
+```kt
+val list = listOf(1, 2, 3, 4, 5)
+
+fun listOf<T>(vararg values: T): List<T> {...}
+```
+- kotlin에서 지원하는 `listOf` 함수의 인자는 `vararg`다.
+- 자바에서 `...` 였다면 코틀린에서는 `vararg`를 명시적으로 파라미터 앞에 붙여야 함
+
+```java
+public void method(String... strArr) {...}
+
+String[] strArr = new String[10];
+XXX.method(strArr); // 바로 넘길 수 있음
+```
+```kt
+fun method(vararg strArr: String) {...}
+
+fun main(args: Array<String>) {
+  method(*args)
+}
+```
+- 자바에서는 배열을 그냥 넘겨도 되지만 코틀린에서는 배열을 명시적으로 풀어서 배열의 각 원소가 인자로 전달되게 해야 함
+- 코틀린에서 스프레드 연산자(`*`)가 해당 역할을 수행
