@@ -1,4 +1,16 @@
+# Kotlin nullable
 
+- 코틀린은 자바와 다르게 null에 대해서 컴파일 단계에서 체크를 한다. (그래서 좀 더 복잡하지만 익숙해지면 오히려 더 편리함?)
+
+## javaClass
+
+- 코틀린에서 어떤 타입인지 알아내고자 할 때 `javaClass`를 사용
+```kt
+testMap["key"]?.javaClass // testMap: Map<String, Any?>
+```
+- 
+
+## Not Null 선언(`!!`)
 ```kt
 package chap7.delegate
 

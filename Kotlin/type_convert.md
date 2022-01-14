@@ -7,7 +7,7 @@
 ```kt
 fun RequestDto.convertToMap(): Map<String, Any?> {
     val mapper = jacksonObjectMapper()
-    val returnMap = HashMap<String, Any?>()
+    val returnMap = mutableMapOf<String, Any?>()
     return mapper.convertValue(this, returnMap::class.java)
 }
 ```
