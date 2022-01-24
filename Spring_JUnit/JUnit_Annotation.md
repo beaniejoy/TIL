@@ -1,4 +1,4 @@
-# 테스트 설정
+# JUnit Annotation 관련
 
 ## @RunWith
 
@@ -10,6 +10,7 @@
 
 ## @SpringBootTest
 
+- **스프링의 모든 빈을 로드해서 테스트하는 방식**
 - JUnit4 사용시 `@RunWith(SpringRunner.class)`를 사용했었음
 - JUnit5 사용시 `@ExtendWith`로 변경되었는데 `@SpringBootTest`를 사용하면 생략 가능
 
@@ -42,3 +43,27 @@ public @interface SpringBootTest {
 ...
 }
 ```
+
+## @WebMvcTest
+```java
+@WebMvcTest
+class CafeControllerTest {
+
+    @Autowired
+    MockMvc mvc;
+
+    @MockBean
+    CafeService cafeService;
+
+    //...
+}
+```
+
+- `@WebMvcTest(테스트 대상 클래스.class)`
+- 인자로 지정한 클래스에 대해서만 실제로 빈을 주입받아 테스트 진행
+  - `Controller` 클래스를 대상으로 함
+- 아규먼트로 컨트롤러를 지정해주지 않으면 `@Controller` `@RestController` `@ControllerAdvice` 등등 컨트롤러와 연관된 bean들이 로드
+- 컨트롤러 이외에는 Mock 객체를 주입받아 테스트 진행
+  - `@Autowired` `MockMvc` 주입
+  - `@MockBean` 으로 Service 단 가짜 객체 주입
+- **`@SpringBootTest`와 달리 컨트롤러 관련 코드만 단위 테스트하고자 할 때 사용**
