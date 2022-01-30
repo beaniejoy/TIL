@@ -67,3 +67,13 @@ class CafeControllerTest {
   - `@Autowired` `MockMvc` 주입
   - `@MockBean` 으로 Service 단 가짜 객체 주입
 - **`@SpringBootTest`와 달리 컨트롤러 관련 코드만 단위 테스트하고자 할 때 사용**
+
+## @DataJpaTest
+
+```java
+@DataJpaTest
+@ActiveProfiles("test")
+```
+- 별도의 스프링 빈을 등록하지 않고, Entity, EntityManager 정도만 등록해서 테스트
+- in-memory DB를 활용해서 테스트가 실행
+- @Transactional > 테스트 종료시 자동으로 롤백
