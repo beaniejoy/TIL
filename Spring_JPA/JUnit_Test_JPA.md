@@ -13,6 +13,7 @@ public class QuerydslTest {...}
 @DataJpaTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class QuerydslTest {...}
 ```
 - https://webcoding-start.tistory.com/20 참고
 
