@@ -1,17 +1,17 @@
 # HTTP
 
-- [TCP, UDP](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md#-tcp-udp)
+- [TCP, UDP](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md#-tcp-udp)
   - TCP
   - UDP
-- [인터넷 연결 과정](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md#-%EC%9D%B8%ED%84%B0%EB%84%B7-%EC%97%B0%EA%B2%B0-%EA%B3%BC%EC%A0%95)
-- [리소스](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md#-%EB%A6%AC%EC%86%8C%EC%8A%A4resource)
+- [인터넷 연결 과정](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md#-%EC%9D%B8%ED%84%B0%EB%84%B7-%EC%97%B0%EA%B2%B0-%EA%B3%BC%EC%A0%95)
+- [리소스](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md#-%EB%A6%AC%EC%86%8C%EC%8A%A4resource)
   - 미디어타입(MIME)
   - URI
   - URN
-- [트랜잭션](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md#-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98)
+- [트랜잭션](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md#-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98)
   - HTTP Method
   - HTTP Status
-- [HTTP 버전별 특징](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md#-http-%EB%B2%84%EC%A0%84%EB%B3%84-%ED%8A%B9%EC%A7%95)
+- [HTTP 버전별 특징](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md#-http-%EB%B2%84%EC%A0%84%EB%B3%84-%ED%8A%B9%EC%A7%95)
   - HTTP/0.9
   - HTTP/1.0
   - HTTP/1.1
@@ -22,7 +22,6 @@
 - HTTP는 HTML문서 같은 리소스들을 가져올 수 있도록 해주는 프로토콜
 - 웹에서 이루어지는 모든 데이터 교환의 기초
 - 클라이언트 - 서버 프로토콜이기도 함
-
 
 - **HTTP통신**
   - Client가 요청을 보내는 경우에만 Server가 응답하는 단방향 통신
@@ -37,7 +36,7 @@
   - 실시간 동영상 Streaming이나 온라인 게임 등과 같은 경우에 자주 사용
 
 ## 📌 TCP, UDP
-[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md)  
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md)  
 - IP 프로토콜 위에서 작동하는 `Transport Layer`
   
 **연결형 서비스**
@@ -71,7 +70,7 @@
 (스트리밍 서비스, 실시간 중계, 게임 등, DNS 서버도 UDP를 사용)
 
 ## 📌 인터넷 연결 과정
-[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md)
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md)
 
 > 브라우저에서 `beaniejoy.io` 에 접속하면 어떤 과정으로 접속이 이루어질까?
 
@@ -87,7 +86,7 @@
 8. 💡 **[TCP 4way handshaking](https://mindnet.tistory.com/entry/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EC%89%BD%EA%B2%8C-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-22%ED%8E%B8-TCP-3-WayHandshake-4-WayHandshake)** 방식으로 커낵션을 종료
 
 ## 📌 리소스(Resource)
-[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md)
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md)
 - 웹 리소스 = 웹 콘텐츠의 원천
 - 정적파일: 가장 단순한 웹 서버 파일 시스템의 파일(HTML문서, Word, PDF, JPG파일, 동영상파일 등)
 - 동적파일: 동적 콘텐츠 리소스. 사용자의 정보에 따라, 요청의 정보에 따라 다른 콘텐츠를 생성(주식거래, 부동산DB 검색, 쇼핑몰 물품 구매 등)
@@ -144,7 +143,7 @@ http://beaniejoy.io/specials/hello-world.html?topic=coffe#middle
 - 여러 종류의 네트워크 프로토콜로 접근한다거나, 리소스를 옮기더라도 이름만 변경하지 않으면 문제 없음
 
 ## 📌 트랜잭션
-[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md)
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md)
 - HTTP 트랜잭션은 요청 명령부처 응답 결과까지 HTTP 메시지를 주고받는 한 단위를 뜻함
 
 ### HTTP Method
@@ -221,7 +220,7 @@ DELETE /cafes/1 HTTP/1.1
 
 ## 📌 HTTP 버전별 특징
 
-[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md)
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md)
 
 ### HTTP/0.9
 
@@ -262,7 +261,7 @@ A very simple HTML page
 - [HTTP/2 관련 설명](https://velog.io/@taesunny/HTTP2HTTP-2.0-%EC%A0%95%EB%A6%AC)
 
 ## 📌 HTTP, HTTPS
-[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md)
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md)
 - `HTTP`: **H**yper**T**ext **T**ransfer **P**rotocol
 - `HTTPS`: **H**yper**T**ext **T**ransfer **P**rotocol over **S**ecure
 
@@ -275,7 +274,7 @@ HTTPS는 이러한 도난의 문제를 극복하고자 SSL(보안 소켓 계층)
 HTTPS의 핵심은 개인키/공개키 암호화, 복호화 방식에 있다. ([링크 참고](https://mangkyu.tistory.com/98))
 
 ## 📌 Connection
-[Go to Top](https://github.com/beaniejoy/TIL/blob/main/06_web/http.md)  
+[Go to Top](https://github.com/beaniejoy/TIL/blob/main/HTTP/_overview.md)  
 - HTTP에서의 TCP 연결의 형태
 
 ![HTTP1_x_Connections](https://user-images.githubusercontent.com/41675375/127663046-e3c55e5a-3612-46d8-8ca5-7014d9281192.png)
