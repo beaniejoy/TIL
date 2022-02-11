@@ -172,8 +172,21 @@ cfada2c0 v0.5 $ git commit -m "updated from v0.5"
 54ef843 $
 ```
 
+- `detached HEAD` 상태에서 commit을 하면 commit 주소로 HEAD가 가리키게됨
+- 이 상태로는 관리도 힘들고 새 커밋에 접근할 방법도 없고(주소로만 접근) 의미도 없는 내용(브랜치가 없기에)이 됨
+- 특정 태그를 checkout하고 새로 커밋을 하는 경우 branch를 따로 만들어 작업하는 것이 좋다.  
+  (추후에 merge할 때도 브랜치를 이용하면 되기 때문에)
+
+```powershell
+$ git checkout -b <branch_name> v0.5
+```
+
 ## tag 삭제
 
 ```powershell
-git tag -d <tagname>
+$ git tag -d <tagname>
+```
+
+```powershell
+$ git push --delete origin <tagname>
 ```
