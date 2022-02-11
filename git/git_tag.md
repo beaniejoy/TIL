@@ -11,7 +11,7 @@
 
 <br>
 
-## tag 만들기
+## :pushpin: tag 만들기
 
 ```powershell
 # 개발 작업을 통해 새로운 commit이 생성된 시점
@@ -25,7 +25,7 @@ $ git tag -a <tagname> -m "[tag에 대한 설명]"
 
 <br>
 
-## tag 확인하기
+## :pushpin: tag 확인하기
 
 ```powershell
 $ git tag (-l, --list)
@@ -82,7 +82,7 @@ index 9dda202..118aace 100644
 
 <br>
 
-## 리모트에 태그 업데이트
+## :pushpin: 리모트에 태그 업데이트
 
 ```powershell
 $ git push origin <tagname> (or --tags)
@@ -95,7 +95,7 @@ $ git push origin <tagname> (or --tags)
 
 <br>
 
-## 추후에 태그 지정하기
+## :pushpin: 추후에 태그 지정하기
 
 ```powershell
 $ git log --pretty=oneline
@@ -132,7 +132,9 @@ $ git push origin v0.2.1 (혹은 --tags)
 - 만들고 태그 리스트업 해보면 새로 만들어진 태그를 확인 가능
 - tag를 push해서 remote에 update 해준다.
 
-## 특정 tag checkout
+<br>
+
+## :pushpin: 특정 tag checkout
 
 - 만약 리모트에 다른 사람이 만든 새로운 태그나 과거 특정 태그를 checkout할 수 있음
 
@@ -181,12 +183,22 @@ cfada2c0 v0.5 $ git commit -m "updated from v0.5"
 $ git checkout -b <branch_name> v0.5
 ```
 
-## tag 삭제
+<br>
+
+## :pushpin: tag 삭제
 
 ```powershell
 $ git tag -d <tagname>
 ```
 
+- 로컬에서 특정 태그를 삭제하는 경우
+
 ```powershell
 $ git push --delete origin <tagname>
 ```
+
+- 리모트(origin)에 있는 특정 태그를 삭제하는 경우
+
+> Sourcetree에 왼쪽 카테고리에 있는 `TAGS` 목록에서 Delete하는 경우  
+> 리모트에 있는 tag를 지우게 되므로 신중하게 사용해야 함  
+> (특히 실제 비즈니스 repo에서)
