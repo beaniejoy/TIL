@@ -68,6 +68,7 @@ fun getParam(
 ```
 - 위와 같은 방식으로 `BindingResult`에 담겨진 에러 존재 유무를 확인하고 에러를 따로 던져야 한다.
 - 해당 부분은 `org.springframework.validation`을 사용할 때 해당
+- `@Valid` 적용된 부분 바로 뒤에 `BindingResult`가 붙어야 한다.
 
 <br>
 
