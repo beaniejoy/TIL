@@ -128,7 +128,23 @@ fun postRequestBody(
 - `@RequestBody`에 대한 validation 에러는 `MethodArgumentNotValidException`로 떨어지는데 `BindException`을 확장한 에러 클래스다.  
 (그래서 `BindException`으로 Exception handling해도 잡힌다.)
 
-### 
+### @RequestParam과 @ModelAttribute
+
+- `@RequestParam`
+  - validation 절차를 거치지 않고 기본 타입 변환이 이루어짐
+  - type 변환에 대한 에러는 400(`MethodArgumentTypeMismatchException`) 에러를 반환
+  - validation에 대한 에러는 500(`ConstraintViolationException`) 에러 반환
+  - 즉 binding 과정에서 발생한 에러들을 `BindingResult`에 담지 않는다.
+  - controller단에서 `BindingResult`를 가져오면 에러 발생
+```bash
+An Errors/BindingResult argument is expected to be declared immediately after  
+the model attribute, the @RequestBody or the @RequestPart arguments
+```
+
+- `@ModelAttribute`
+  - 검증 과정도 같이 진행된다.
+  - binding 과정에서 발생한 에러를 `BindingResult`에 담는다.
+  - type 변환에 대한 오류, validation에 대한 오류 모두 400(`BindException`)으로 반환
 
 <br>
 
