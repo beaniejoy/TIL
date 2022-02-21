@@ -135,7 +135,8 @@ fun postRequestBody(
   - type 변환에 대한 에러는 400(`MethodArgumentTypeMismatchException`) 에러를 반환
   - validation에 대한 에러는 500(`ConstraintViolationException`) 에러 반환
   - 즉 binding 과정에서 발생한 에러들을 `BindingResult`에 담지 않는다.
-  - controller단에서 `BindingResult`를 가져오면 에러 발생
+  - Controller단에서 `BindingResult`를 가져오면 에러 발생
+  - Controller단에서 파라미터를 검증하는 코드가 추가될 수 있다.
 ```bash
 An Errors/BindingResult argument is expected to be declared immediately after  
 the model attribute, the @RequestBody or the @RequestPart arguments
@@ -145,6 +146,10 @@ the model attribute, the @RequestBody or the @RequestPart arguments
   - 검증 과정도 같이 진행된다.
   - binding 과정에서 발생한 에러를 `BindingResult`에 담는다.
   - type 변환에 대한 오류, validation에 대한 오류 모두 400(`BindException`)으로 반환
+  - `BindingResult`를 Controller단에 argument로 가져오면 400에러를 반환하지 않고 처리가 가능해진다.  
+  (단순히 400에러만을 반환하기보다 api 사용자의 편의성을 제공해줄 수 있음)
+
+> 위의 차이점으로 인해 입력값에 대한 검증에 대한 에러 핸들링까지 고려했을 때 ModelAttribute를 사용하면 세련되게 처리할 수 있음
 
 <br>
 
