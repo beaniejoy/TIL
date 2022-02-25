@@ -75,3 +75,48 @@ prom function!
 func after await prom
 ```
 - main 함수 내에서 func을 호출하는데 func의 내부로직이 async, await 비동기 처리를 했어도 main 함수 내에서 순서는 보장이 안됨
+
+
+<br>
+
+## :pushpin: case 3.
+
+```js
+function prom2() {
+  return new Promise((resolve, reject) => {
+    throw new Error('prom2 error!');
+  }).catch((error) => {
+    console.log('prom2 catch', error);  // ...3
+  });
+}
+
+const func = () => {
+  console.log('func before await prom');  // ...1
+
+  prom2();
+
+  console.log('func after await prom');   // ...2
+}
+```
+```
+func before await prom
+func after await prom               ... 먼저 끝나게 됨
+prom2 catch Error: prom2 error!
+    at /Users/beanie.joy/Dev/2022/js-test/test2.js:18:11
+    at new Promise (<anonymous>)
+    at prom2 (/Users/beanie.joy/Dev/2022/js-test/test2.js:17:10)
+    at func (/Users/beanie.joy/Dev/2022/js-test/test2.js:31:3)
+    at Object.<anonymous> (/Users/beanie.joy/Dev/2022/js-test/test2.js:41:1)
+```
+- await 없이 실행하면 error catch한 부분이 마지막에 실행 된다.
+
+```js
+const func = async () => {
+  console.log('func before await prom');  // ...1
+
+  await prom2();  // ...2
+
+  console.log('func after await prom');   // ...3
+}
+```
+- 이 때는 순차적으로 실행
