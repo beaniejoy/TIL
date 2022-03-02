@@ -86,6 +86,21 @@ fun getParam(
 - `@ModelAttribute`에서 발생하는 Validation Exception은 `BindException`으로 떨어진다.
 - `BindingResult`를 받아서 Exception Handling 할 수 있다.
 
+### @RequestBody
+```kotlin
+@PostMapping("/post")
+fun postRequestBody(
+    @Valid @RequestBody validRequestDto: ValidRequestDto
+): ValidRequestDto {
+  //...
+}
+```
+- 기본적으로 `400` 에러코드 반환(`MethodArgumentNotValidException`)
+- `@RequestBody`에 대한 validation 에러는 `MethodArgumentNotValidException`로 떨어지는데 `BindException`을 확장한 에러 클래스다.  
+(그래서 `BindException`으로 Exception handling해도 잡힌다.)
+- 단, POST 요청 보낼 시 request body단에 보낼 데이터를 json형태로 지정해주어야 한다.  
+  지정 안할 시 `HttpMessageNotReadableException` 발생
+
 ### @RequestParam
 ```kotlin
 @RestController
@@ -115,19 +130,6 @@ fun getParam(
 ```
 - 위의 `@RequestParam` 내용과 같다.
 
-### @RequestBody
-```kotlin
-@PostMapping("/post")
-fun postRequestBody(
-    @Valid @RequestBody validRequestDto: ValidRequestDto
-): ValidRequestDto {
-  //...
-}
-```
-- 기본적으로 `400` 에러코드 반환(`MethodArgumentNotValidException`)
-- `@RequestBody`에 대한 validation 에러는 `MethodArgumentNotValidException`로 떨어지는데 `BindException`을 확장한 에러 클래스다.  
-(그래서 `BindException`으로 Exception handling해도 잡힌다.)
-
 ### @RequestParam과 @ModelAttribute
 
 - `@RequestParam`
@@ -137,10 +139,6 @@ fun postRequestBody(
   - 즉 binding 과정에서 발생한 에러들을 `BindingResult`에 담지 않는다.
   - Controller단에서 `BindingResult`를 가져오면 에러 발생
   - Controller단에서 파라미터를 검증하는 코드가 추가될 수 있다.
-```bash
-An Errors/BindingResult argument is expected to be declared immediately after  
-the model attribute, the @RequestBody or the @RequestPart arguments
-```
 
 - `@ModelAttribute`
   - 검증 과정도 같이 진행된다.
@@ -150,6 +148,15 @@ the model attribute, the @RequestBody or the @RequestPart arguments
   (단순히 400에러만을 반환하기보다 api 사용자의 편의성을 제공해줄 수 있음)
 
 > 위의 차이점으로 인해 입력값에 대한 검증에 대한 에러 핸들링까지 고려했을 때 ModelAttribute를 사용하면 세련되게 처리할 수 있음
+
+### BindingResult
+```bash
+An Errors/BindingResult argument is expected to be declared immediately after  
+the model attribute, the @RequestBody or the @RequestPart arguments
+```
+- Controller 단에서 `BindingResult` 적용시 반드시 `@Valid` 적용된 파라미터 바로 뒤에 `BindingResult`를 받아와야 한다.
+- `@Valid`와 `BindingResult` 중간에 다른 파라미터가 있으면 Validation 관련 `BindingResult`를 가져오지 못함
+
 
 <br>
 
