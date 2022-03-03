@@ -88,7 +88,7 @@ const func = async () => {
   console.log('func before await prom');
 
   try {
-    await prom();
+    await prom(1000);
   } catch(error) {
     console.log('func catch :', error);
   }
