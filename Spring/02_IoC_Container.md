@@ -33,13 +33,15 @@ public class A {
 - 제3자의 역할을 Spring IoC에서 해주는 것
 - **Spring IoC는 객체 생성(bean 객체)과 관리 역할 뿐만 아니라 의존성 주입(DI) 역할도 수행** 
 
+<br>
+
 ## Spring IoC Container
 
-- BeanFactory
-  - ApplicationContext의 최상위 인터페이스
-- Spring Application에 등록된 모든 bean들을 저장하고 관리하는 저장소 역할
-- 빈 설정(config) 소스로부터 bean에 대한 설정 정의를 읽고 bean을 생성하고 제공해줌
-- Bean
+- `BeanFactory`
+  - `ApplicationContext`의 최상위 인터페이스
+  - Spring Application에 등록된 모든 bean들을 저장하고 관리하는 저장소 역할
+  - 빈 설정(config) 소스로부터 bean에 대한 설정 정의를 읽고 bean을 생성하고 제공해줌
+- `Bean`
   - Spring IoC Container의 관리 대상인 객체
   - 의존성 관리
     - 의존관계에 해당하는 객체들을 IoC가 알아서 연결해주고 주입시켜줌
@@ -51,6 +53,8 @@ public class A {
     - `Singleton`: 애플리케이션 생성시 bean들을 최초 등록 후 동일한 객체를 계속 사용
     - `Prototype`: bean을 사용할 때마다 새로운 객체를 생성해서 사용
     - 객체를 생성하는 데 많은 비용이 들기 때문에 IoC에서는 기본적으로 `Singleton`으로 적용
+
+<br>
 
 ## BeanFactory
 ```
@@ -64,9 +68,13 @@ BeanFactory
 - `BeanFactory`: 스프링 컨텍스트의 최상위 인터페이스
 - `getBean()` 제공
 
-### ApplicationContext
-- BeanFactory를 상속
+<br>
+
+## ApplicationContext
+- BeanFactory를 상속(구현)
 - BeanFactory의 기본 기능들에서 여러 부가기능들 제공
+- 스프링 IoC 컨테이너의 핵심
+
 ```
 ApplicationContext
   ├──> MessageSource
@@ -74,7 +82,7 @@ ApplicationContext
   ├──> ApplicationEventPublisher
   └──> ResourceLoader
 ```
-#### EnvironmentCapable
+### EnvironmentCapable
 - 프로파일과 프로퍼티를 다루는 인터페이스  
 - `@Profile("profile_name")`
   - 빈들의 그룹
@@ -83,10 +91,10 @@ ApplicationContext
 - Property
   - `@Value("${app.name}")` 이런 식으로 프로퍼티 값을 전달할 수 있다.
 
-#### MessageSource
+### MessageSource
 - 국제화(`i18n`) 기능 제공
 
-#### ApplicationEventPublisher
+### ApplicationEventPublisher
 - 이벤트를 발행하고 구독하는 모델을 편리하게 지원
 - 이벤트 프로그래밍에 필요한 인터페이스 제공. 옵저버 패턴 구현체.
 - Annotation 지원
@@ -94,7 +102,7 @@ ApplicationContext
   - `@Async`(`@EnableAsync` 설정 필수)
   - `@Order`
 
-#### ResourceLoader
+### ResourceLoader
 - 리소스를 읽어오는 기능을 제공하는 인터페이스
   - 파일 시스템에서 읽어오기
   - 클래스패스에서 읽어오기
