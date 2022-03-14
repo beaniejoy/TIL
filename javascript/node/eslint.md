@@ -2,6 +2,8 @@
 
 - code convention check
 
+<br>
+
 ## package.json
 
 ```json
@@ -15,7 +17,9 @@
 ```
 - `eslint`
 - `eslint-plugin-vue`
-- `@babel/eslint-parser`와 `babel-eslint` 차이
+- `@babel/eslint-parser`와 `babel-eslint` 차이 알아볼 것
+
+<br>
 
 ## config
 
@@ -31,18 +35,15 @@ module.exports = {
     browser: true,
   },
   extends: [
-    // 'plugin:vue/essential',
-    'plugin:vue/vue3-essential',
+    //...,
     'eslint:recommended',
   ],
 };
 ```
 - `eslint:recommended`
   - able to use eslint rules (ESlint rules API 참고)
-- `plugin:vue/essential`
-  - Use this if you are using Vue.js 2.x.
-- `plugin:vue/vue3-essential`
-  - Vue CLI version >= 3.x 
+
+<br>
 
 ## rules
 
@@ -62,3 +63,20 @@ rules: {
 },
 ```
 - `eslint:recommended` 설정시 사용할 수 있는 rules (https://eslint.org/docs/rules/)
+
+<br>
+
+## Vue ESlint
+
+- https://eslint.vuejs.org/
+
+```js
+extends: [
+  // 'plugin:vue/essential',
+  'plugin:vue/vue3-essential',
+]
+```
+- `plugin:vue/essential`
+  - Use this if you are using Vue.js 2.x.
+- `plugin:vue/vue3-essential`
+  - Vue CLI version >= 3.x 
