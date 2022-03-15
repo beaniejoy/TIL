@@ -17,11 +17,14 @@
 ```
 - `eslint`
 - `eslint-plugin-vue`
-- `@babel/eslint-parser`와 `babel-eslint` 차이 알아볼 것
+
+> As of March 2020, babel-eslint has been deprecated, and is now @babel/eslint-parser.
+
+- `babel-eslint`(deprecated) > `@babel/eslint-parser` 
 
 <br>
 
-## config
+## ESlint Config
 
 ```js
 // .eslintrc.js
@@ -43,9 +46,7 @@ module.exports = {
 - `eslint:recommended`
   - able to use eslint rules (ESlint rules API 참고)
 
-<br>
-
-## rules
+### rules
 
 ```js
 // .eslintrc.js
@@ -80,3 +81,27 @@ extends: [
   - Use this if you are using Vue.js 2.x.
 - `plugin:vue/vue3-essential`
   - Vue CLI version >= 3.x 
+
+### rules for vue cli ESlint
+
+```js
+// .eslintrc.js
+rules: {
+  /* plugin:vue/vue3-essential */ 
+  'vue/html-closing-bracket-newline': ["error", {
+    "singleline": "never",
+    "multiline": "always"
+  }],
+  'vue/html-closing-bracket-spacing': ["error"],
+  'vue/html-end-tags': ["error"],
+  'vue/html-indent': ["error", 2],
+  'vue/html-quotes': ["error"],
+  'vue/html-self-closing': ["error", {
+    "html": {
+      "void": "always",
+      "normal": "never"
+    }
+  }
+}
+```
+- vue cli eslint rules API ([참고링크](https://eslint.vuejs.org/rules/))
