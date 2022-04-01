@@ -16,11 +16,14 @@ fun RequestDto.convertToMap(): Map<String, Any?> {
 
 ## Map에서 value의 타입 관련 필기 내용
 ```kt
-val convertedMap = balanceRecordAdvanceRequest.convertToMap()
+val convertedMap = request.convertToMap()
 val searchKeywordMap = convertedMap.filterNotNullAndBlankValues()
 
-println("############# ${searchKeywordMap["balanceId"]?.javaClass}") // class java.lang.Long
-val balanceId = searchKeywordMap["balanceId"] // Any?
+// class java.lang.Long
+println("############# ${searchKeywordMap["id"]?.javaClass}") 
+
+// Any?
+val balanceId = searchKeywordMap["id"] 
 ```
 - 위의 상황에서 `.javaClass` 사용시 Long으로 변환되는 것을 볼 수 있다.
 - 그리고 다시 balanceId key로 index 접근했을 때 `Any?` 반환
