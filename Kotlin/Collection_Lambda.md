@@ -15,9 +15,7 @@ memberList.associate { it.id to it.name }
 
 <br>
 
-## map
-
-### mapNotNull
+## mapNotNull
 ```kt
 inline fun <T, R : Any> Array<out T>.mapNotNull(
     transform: (T) -> R?
@@ -27,12 +25,12 @@ inline fun <T, R : Any> Array<out T>.mapNotNull(
 - `transform` 반환값이 null인지 아닌지가 중요
 
 ```kt
-val searchKeywordMap = convertedMap.mapNotNull { 
+val map = convertedMap.mapNotNull { 
         (key, value) -> value?.let { key to it } 
     }.toMap()
 ```
 - Map에서 value가 null인 경우 제외하는 코드
-- value가 null이 아닌 경우 `key to it`(value)를 통해 Map에 다시 담는다.
+- **value가 null이 아닌 경우 `key to it`(value)를 통해 Map에 다시 담는다.**
   - 일종의 필터링을 통해 걸러진 데이터를 새로운 Map 객체에 다시 담는 것
 
 <br>
@@ -45,6 +43,27 @@ fun <K, V> Map<K, V?>.filterNotNullAndBlankValues(): MutableMap<K, V> =
 ```
 - `Filter a Kotlin Map to get non-null values only` Reference 참조
 - param value가 null이거나 blank(`""`)인 경우에 filtering하는 함수
+
+<br>
+
+## groupBy
+```kt
+val list = listOf(
+    Commodity("name1", 15900, TYPE.A),
+    Commodity("name2", 25000, TYPE.B),
+    Commodity("name3", 30100, TYPE.B),
+    Commodity("name4", 20000, TYPE.C)
+)
+
+// Map type으로 반환
+// 여기서 key(Type), value(MutableList<Commodity>)
+list.groupBy { it.type }
+    .mapValues {
+        it.value.sumBy { it.price }
+    }
+```
+- 쿼리에서 GROUP BY 기능과 유사한 기능을 제공
+- groupBy를 통해 sum과 같은 집계 기능을 chaining 할 수 있다.
 
 <br>
 
