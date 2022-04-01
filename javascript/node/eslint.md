@@ -43,8 +43,16 @@ module.exports = {
   ],
 };
 ```
+- `root`
+  - 특정 프로젝트로 ESlint 범위를 설정하고자 할 때
+  - `true`: project root level 위치에서 ESlint 범위 설정 
 - `eslint:recommended`
   - able to use eslint rules (ESlint rules API 참고)
+- `env`
+  - provides predefined global variables
+  - `browser`: console 같은 전역변수 사용가능
+  - `node`: require 같은 예약어 사용 가능
+
 
 ### rules
 
