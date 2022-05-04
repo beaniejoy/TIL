@@ -16,6 +16,7 @@ public class QuerydslTest {...}
 public class QuerydslTest {...}
 ```
 - https://webcoding-start.tistory.com/20 참고
+- https://zetcode.com/springboot/testentitymanager/
 
 ## EntityManager 설정
 
