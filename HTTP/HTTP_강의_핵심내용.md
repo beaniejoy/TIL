@@ -2,7 +2,7 @@
 
 - [모든 개발자를 위한 HTTP 웹 기본 지식 - 김영한님](https://www.inflearn.com/course/http-%EC%9B%B9-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/dashboard)
 
-## 인터넷 네트워크
+## :pushpin: 인터넷 네트워크
 
 ### IP (인터넷 프로토콜)
 - **IP address**를 통한 데이터 전달
@@ -35,6 +35,66 @@
 
 <br>
 
-## URI, 웹 브라우저 요청 흐름
+## :pushpin: URI, 웹 브라우저 요청 흐름
 
 ### URI
+- `URI` (Uniform Resource Indentifier)
+  - Locator(위치, `URL`), Name(이름, `URN`)으로 분류됨
+- 주로 URL(유동적)을 사용, URN(고정, ex. isbn)은 있다 정도만
+- [URI 스펙 링크](https://www.ietf.org/rfc/rfc3986.txt)
+
+#### URL
+> scheme://[userinfo@]host[:port][/path][?query][#fragment]
+- scheme
+  - 프로토콜에 대한 내용(http - 80, https - 443)
+- host
+  - ip address, domain address
+- path
+  - 리소스 직접 경로(`/home/file1.jpg`), 계층적 구조(`/members/100`)
+- query
+  - query string(parameter)
+
+### 웹 브라주어 요청 흐름
+1. 웹 브라우저가 DNS서버에 도메인 주소에 대한 IP 주소를 요청
+2. IP주소와 port 정보를 기반으로 HTTP message 생성
+3. Socket 라이브러리를 통한 서버 연결(TCP 3-way handshaking) 및 하위 계층으로 메시지 전달
+4. TCP/IP 패킷 생성
+5. LAN 및 WAN을 통해 서버로 전달
+6. 서버는 수신한 TCP/IP 패킷을 해석해 클라이언트가 원하는 데이터를 가져와 응답데이터 생성 및 같은 방식으로 TCP/IP 패킷 생성해서 클라이언트에 전달
+   - Content-Type, Content-Length, body 데이터 등
+7. 클라이언트는 응답데이터를 수신해 해당 body 데이터를 화면에 랜더링
+
+<br>
+
+## :pushpin: HTTP 기본
+
+### 모든 것이 HTTP
+- HTTP 메시지
+  - HTML, TEXT, XML, JSON, IMAGE, 음성, 영상, 거의 모든 형태 리소스를 주고 받을 수 있음
+- HTTP 버전
+  - HTTP/0.9: GET만 지원, 헤더 X
+  - HTTP/1.0: 메서드, 헤더 추가
+  - HTTP/1.1: 현재 대다수 사용되고 있는 버전, keep-alive 기능 default 제공
+  - HTTP/2, HTTP/3(UDP): 성능 개선에 초점
+- 특징
+  - 비연결성, 무상태 프로토콜(stateless), 클라이언트 서버구조, HTTP 메시지 사용
+
+### 클라이언트 서버 구조
+- 하나의 노드에 클라이언트, 서버라는 개념이 불명확, 현재는 역할이 명확
+- 서버는 서버의 역할에만 충실하면 됨(REST API 제공용)
+
+### stateful vs stateless
+- stateful
+  - 중간에 점원이 바뀌면 안됨(한 점원이 고객의 상태정보를 알고 있음)
+- stateless
+  - 중간에 점원이 바뀌어도 됨(고객이 다른 점원에게 기존의 정보들을 다같이 요청하면 됨)
+  - 유동적인 서버 증설 가능
+  - 한계도 분명 존재: 로그인 같은 상태 정보를 저장해야되는 경우
+
+### 비연결성(connectionless)
+- 연결성
+  - 단점은 유휴상태여도 해당 클라이언트와 연결을 유지해야함
+- 비연결성
+  - HTTP 기본
+  - 3-way handshaking 시간 비용 추가
+  - 하나의 파일만 요청하는 것이 아니라 수많은 파일들이 같이 요청됨(비효율적)
