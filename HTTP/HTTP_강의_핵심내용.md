@@ -95,6 +95,62 @@
 - 연결성
   - 단점은 유휴상태여도 해당 클라이언트와 연결을 유지해야함
 - 비연결성
-  - HTTP 기본
+  - 서버자원을 효율적으로 사용 가능  
+  (연결을 유지하지 않기때문에 여러 사용자 request를 동시에 처리 가능)
+  - HTTP 기본 모델
   - 3-way handshaking 시간 비용 추가
   - 하나의 파일만 요청하는 것이 아니라 수많은 파일들이 같이 요청됨(비효율적)
+  - HTTP는 현재 `Persistent Connections`를 기본으로 사용  
+  (이전에는 `keep-alive` 상태를 부여했어야 했는데 지금은 default로 설정됨)
+
+### HTTP 메시지
+- format
+  - start-line
+    - 요청메시지: `GET /path HTTP/1.1`
+    - 응답메시지: `HTTP/1.1 200 OK`
+  - header
+    - 요청메시지: `Host: www.google.com`
+    - 응답메시지:  
+    `Content-Type: text/html;charset=UTF-8`  
+    `Content-Length: 3423`
+  - empty line (`CRLF`)
+  - message body
+    - 전달할 메시지 (JSON, HTML, etc..., byte로 표현할 수 있는 모든 데이터 가능)
+- **단순함, 확장 가능**
+
+<br>
+
+## HTTP API
+
+### HTTP API를 만들어보기
+- **리소스 식별**이 중요 (리소스 자체가 중요 ex. 회원 `/members`)
+- 리소스와 행위를 분리
+  - 리소스: 회원
+  - 행위: 조회, 등록, 삭제, 변경 (CRUD)
+- 메소드(행위) 종류
+  - `GET`: 리소스 조회
+  - `POST`: 요청 데이터 처리, 주로 등록에 사용
+  - `PUT`: **리소스를 대체**, 해당 리소스가 없으면 생성
+  - `PATCH`: 리소스 부분 변경
+  - `DELETE`: 리소스 삭제
+- 기타 메소드
+  - `HEAD`: 상태줄과 헤더만 반환
+  - `OPTIONS`: 대상 리소스에 대한 사용가능 메소드 설명(CORS에서 주로 사용)
+  - `CONNECT`: 대상 자원으로 식별되는 서버에 대한 터널 설정(**거의 사용 X**)
+  - `TRACE`: 대상 리소스에 대한 경로를 따라 메시지 루프백 테스트 수행(**거의 사용 X**)
+
+### GET, POST
+- GET
+  - query를 통해서 데이터를 전달
+- POST
+  - 메시지 바디를 통해 서버로 요청 데이터 전달(데이터를 보낼테니 이 데이터를 처리해줘~)
+  - 신규 리소스 등록, 프로세스 처리에 사용, 다른 메소드로 처리하기 애매한 경우
+
+### PUT, PATCH, DELETE
+- PUT
+  - 리소스 대체: 있으면 대체, 없으면 생성(overwrite)
+  - 클라이언트가 리소스 식별 (/members/100)
+- PATCH
+  - 리소스 부분 변경
+- DELETE
+  - 리소스 제거
