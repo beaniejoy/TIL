@@ -3,6 +3,8 @@
 - commit 수정하기 (amend)
 - cherrypick
 - reset
+- revert
+- stash
 - remove file (remote repo)
 
 <br>
@@ -13,7 +15,7 @@
 $ git commit --amend
 ```
 
-- 이전 커밋 내용을 수정하는 명령어
+- 최상위 커밋 내용을 수정하는 명령어
 - 이전의 커밋을 없애고 새로운 커밋으로 변경하는 것(이전 커밋은 이력에서 없어짐)
 - 누락된 커밋 내용이나 파일들이 있거나 오타 같은 내용에 대해 수정할 때 유용함  
   (굳이 새 커밋으로 하지 않고 기존 커밋을 수정하고 싶을 때)
@@ -57,6 +59,18 @@ $ git reset HEAD .
 ```
 
 - `git add` 했던 내용들 중 다시 Unstage 영역으로 돌리고 싶은 파일이 있는 경우
+
+<br>
+
+## :pushpin: revert
+- reset과 다르게 과거 커밋으로 돌릴 때 새로운 커밋을 만들어 되돌린 내용에 대한 이력을 또 남기는 것
+
+<br>
+
+## :pushpin: stash
+- 임시 저장
+- `untracked` 상태인 새로운 파일들은 stash 대상이 아니다.  
+  (`tracked` 대상만 해당 - 한 번이라도 git push한 내용)
 
 <br>
 
