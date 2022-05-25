@@ -120,7 +120,7 @@
 
 <br>
 
-## :pushpin: HTTP API
+## :pushpin: HTTP Method
 
 ### HTTP API를 만들어보기
 - **리소스 식별**이 중요 (리소스 자체가 중요 ex. 회원 `/members`)
@@ -157,7 +157,7 @@
 
 ### HTTP 메서드의 속성
 - 안전
-  - **호출해도 리소스를 변경하지 않는다.**
+  - **호출해도 리소스를 변경하지 않는다.** (ex. GET)
   - **리소스 자체만 고려**, 다른 내용은 고려 X (로그로 인한 서버장애 부분까지?? NO!)
 - 멱등성
   - **1번, 100번 호출하든 결과가 똑같은 성질**
@@ -169,3 +169,31 @@
 - 캐시가능
   - 응답결과 리소스를 캐시해서 사용가능한가
   - GET, HEAD, POST, PATCH 캐시가능 -> **GET, HEAD 정도만 사용**
+
+<br>
+
+## :pushpin: HTTP 메서드 활용
+
+### 클라이언트에서 서버로 데이터 전송
+- 데이터 전달 방식 2가지
+  - query parameter
+    - GET,
+    - 정렬 필터/검색어
+  - message body 
+    - POST, PUT, PATCH
+    - 회원가입, 상품주문, 리소스 등록/변경
+- 4가지 상황
+  1. 정적 데이터 조회 (static)
+  2. 동적 데이터 조회 (query parameter)
+  3. HTML form 데이터 전송 (parameter)
+     - POST 전송: `application/x-www-form-urlencoded`
+     - GET 전송: query parameter
+     - multipart/form-data
+       - binary 데이터 전송시, 
+       - 메시지 바디에 form 내용과 다른 종류의 여러 파일을 다같이 전송하기 때문에 multipart
+  4. HTTP API: 
+     - 서버 to 서버
+     - 웹/앱 클라이언트 (ajax, axios)
+     - POST, PUT, PATCH > `application/json` (**사실상 표준**)
+     - GET > query parameter
+
