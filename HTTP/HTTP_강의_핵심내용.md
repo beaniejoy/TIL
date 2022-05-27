@@ -197,3 +197,29 @@
      - POST, PUT, PATCH > `application/json` (**사실상 표준**)
      - GET > query parameter
 
+### HTTP 설계 예시
+- 미네랄을 캐다 -> `미네랄(리소스)`에 초점을 둬야 함. 캐다에 초점을 맞추면 안된다.
+- 캐다라는 행위에 대해서는 Method로 빼야 한다.
+
+#### POST 기반 등록 - 회원 관리 시스템 예시
+- 회원 목록 조회 `GET /members`
+- 회원 등록 `POST /members`
+- 회원 조회 `GET /members/{id}`
+- 회원 수정 `PUT/PATCH/POST /members/{id}`
+  - 보통은 `PATCH`(부분 수정)
+  - 게시글 수정 같은 삭제 후 다시 저장하는 경우에는 `PUT`
+  - 이도저도 아닐 때 `POST`
+- 회원 삭제 `DELETE /members/{id}`
+
+#### POST, PUT 방식의 차이
+- POST 방식으로 등록
+  - 서버에서 신규 등록된 리소스의 URI를 만들어서 응답을 해준다.
+  - header: `Location: /members/100`
+  - body: `{ id: 100, ... }` 
+
+#### PUT 기반 등록 - 파일 관리 시스템
+- 파일 목록 조회 `GET /files`
+- 파일 조회 `GET /files/{filename}`
+- 파일 등록 `PUT /files/{filename}`
+- 파일 삭제 `DELETE /files/{filename}`
+- 파일 대량 등록 `POST /files`
