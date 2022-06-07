@@ -201,7 +201,7 @@
 - 미네랄을 캐다 -> `미네랄(리소스)`에 초점을 둬야 함. 캐다에 초점을 맞추면 안된다.
 - 캐다라는 행위에 대해서는 Method로 빼야 한다.
 
-#### POST 기반 등록 - 회원 관리 시스템 예시
+#### (HTTP API) POST 기반 등록 - 회원 관리 시스템 예시
 - 회원 목록 조회 `GET /members`
 - 회원 등록 `POST /members`
 - 회원 조회 `GET /members/{id}`
@@ -211,15 +211,46 @@
   - 이도저도 아닐 때 `POST`
 - 회원 삭제 `DELETE /members/{id}`
 
-#### POST, PUT 방식의 차이
-- POST 방식으로 등록
-  - 서버에서 신규 등록된 리소스의 URI를 만들어서 응답을 해준다.
-  - header: `Location: /members/100`
-  - body: `{ id: 100, ... }` 
-
-#### PUT 기반 등록 - 파일 관리 시스템
+#### (HTTP API) PUT 기반 등록 - 파일 관리 시스템
 - 파일 목록 조회 `GET /files`
 - 파일 조회 `GET /files/{filename}`
 - 파일 등록 `PUT /files/{filename}`
 - 파일 삭제 `DELETE /files/{filename}`
 - 파일 대량 등록 `POST /files`
+
+#### POST, PUT 방식의 차이
+- POST 방식으로 등록
+  - 클라이언트는 등록될 리소스 URI 모름
+  - 서버에서 신규 등록된 리소스의 URI를 만들어서 응답을 해준다.
+    - header: `Location: /members/100`
+    - body: `{ id: 100, ... }` 
+  - **컬랙션(collection)** 개념: 서버가 관리하는 리소스 디렉토리(`/members`)
+- PUT 방식으로 등록
+  - POST 방식과 다르게 PUT이 리소스 등록으로 사용
+  - 클라이언트가 리소스 URI를 알고 있어야 한다. (클라이언트가 file 이름을 알고 등록해야 한다.)
+  - **스토어(store)** 개념: 클라이언트가 관리하는 리소스 저장소(`/files`)
+  
+#### HTML FORM 사용
+- FORM 형식은 `GET`, `POST` 방식만 지원
+- `/new`, `/edit`, `/delete` 동사로된 리소스 경로 사용
+- HTTP Method로 해결하기 애매한 경우 사용
+  - 회원 목록 조회: `GET /members`
+  - 회원 등록 폼: `GET /members/new`
+  - 회원 등록: `POST /members/new` (or `/members`) - 등록 폼 주소와 같이가는 것이 좋다.
+  - 회원 상세 조회: `GET /members/{id}`
+  - 회원 수정 폼: `GET /members/{id}/edit`
+  - 회원 수정: `POST /members/{id}/edit` (or `/members/{id}`) - 수정 폼 주소와 같이가는 것이 좋다.
+  - 회원 삭제: `POST /members/{id}/delete`
+
+#### URI 설계 개념
+- document
+  - 단일 개념, 객체 인스턴스, DB row (`/members/100`, `/files/star.jpg`)
+- collection
+  - 서버가 관리하는 리소스 디렉토리
+- store
+  - 클라이언트가 관리하는 리소스 저장소
+- controller(control URI)
+  - 문서, 컬랙션, 스토어로 해결하기 어려운 추가 프로세스 실행
+  - 동사 직접 사용 (`/delete`, `/new`, `/edit`)
+- 참고
+   - https://restfulapi.net/resource-naming
