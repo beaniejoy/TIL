@@ -333,3 +333,34 @@
     - `Retry-After` header 통해서 얼마뒤에 복구되는지 알려줄 수 있음
 
 > `4xx` 에러를 `5xx` 에러로 던지지 말 것
+
+<br>
+
+## :pushpin: HTTP 헤더1 - 일반 헤더
+
+### HTTP 헤더 개요
+
+- 1999: `RFC2616` (과거)
+- 2014: `RFC723x` (현재)
+#### HTTP 헤더 (RFC2616 과거)
+- General Header: HTTP 메시지 전체
+- Request Header: 요청 정보
+- Response Header: 응답 정보
+- Entity Header: 엔티티 바디 정보
+
+#### HTTP Body (RFC2616 과거)
+- 메시지 본문(message body)을 통해 Entity body를 전달하는 데 사용
+- Entity Header는 Entity body의 데이터를 해석할 수 있는 정보 제공
+  - 데이터 유형, 데이터 길이, 압축 정보
+
+#### `RFC723x` 변화
+- Entity -> Representation
+- Representation = Metadata + Data
+
+#### HTTP Body (RFC7230 최신)
+- 메시지 본문(message body)을 통해 **표현 데이터**(Data) 전달
+- 메시지 본문 = `payload`
+- 표현 = 요청/응답에서 전달할 실제 데이터
+- **표현 헤더**(Metadata): **표현 데이터**를 해석할 수 있는 정보 제공
+  - **표현 메타데이터**는 헤더를 구성하는 항목 중 하나
+  - `표현 헤더 = 표현 메타데이터 + (페이로드 메시지,,, 생략)`
