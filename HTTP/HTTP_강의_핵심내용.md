@@ -354,13 +354,14 @@
   - 데이터 유형, 데이터 길이, 압축 정보
 
 #### `RFC723x` 변화
-- Entity -> Representation
-- Representation = Metadata + Data
+- Entity -> `Representation`
+- `Representation` = Metadata + Data
 
 #### HTTP Body (RFC7230 최신)
 - 메시지 본문(message body)을 통해 **표현 데이터**(Data) 전달
 - 메시지 본문 = `payload`
 - 표현 = 요청/응답에서 전달할 실제 데이터
+  - 서버에서 데이터를 어떤 형식으로 응답해줄건지(html, json, xml, ...) **표현**이 달라짐
 - **표현 헤더**(Metadata): **표현 데이터**를 해석할 수 있는 정보 제공
   - **표현 메타데이터**는 헤더를 구성하는 항목 중 하나
   - `표현 헤더 = 표현 메타데이터 + (페이로드 메시지,,, 생략)`
