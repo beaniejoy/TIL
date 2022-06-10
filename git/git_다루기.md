@@ -55,10 +55,10 @@ $ git push -f origin [branch]
 ### add한 파일 되돌리기(Unstage로 돌리기)
 
 ```bash
-$ git reset HEAD .
+$ git reset [file]
 ```
-
 - `git add` 했던 내용들 중 다시 Unstage 영역으로 돌리고 싶은 파일이 있는 경우
+- reset 할 때 옵션을 붙이지 않으면 `--mixed`로 진행
 
 <br>
 
