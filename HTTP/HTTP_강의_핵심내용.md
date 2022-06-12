@@ -365,3 +365,140 @@
 - **표현 헤더**(Metadata): **표현 데이터**를 해석할 수 있는 정보 제공
   - **표현 메타데이터**는 헤더를 구성하는 항목 중 하나
   - `표현 헤더 = 표현 메타데이터 + (페이로드 메시지,,, 생략)`
+
+### 표현
+- `Content-Type`: 표현 데이터의 형식
+  - `text/html;charset=utf-8`, `application/json`, `image/png`
+- `Content-Encoding`: 표현 데이터의 압축 방식
+  - `gzip`, `deflate`, `identity`
+  - 데이터 읽는 쪽에서 인코딩 헤더 정보로 압축 해제
+- `Content-Language`: 표현 데이터의 자연 언어
+  - `en`, `ko`, `en-US`
+- `Content-Length`: 표현 데이터의 길이
+  - 바이트 단위
+  - Transfer-Encoding(전송 코딩)사용시 Length 사용 X
+
+### 협상(Content Negotiation)
+- 클라이언트가 선호하는 표현 요청
+- `Accept`: 클라이언트가 선호하는 미디어 타입 전달
+- `Accept-Charset`
+- `Accept-Encoding`
+- `Accept-Language`
+#### 우선 순위: Quality Values(q)
+  - Quality Values 사용
+    - 0 ~ 1 범위, 클수록 높은 우선순위(생략하면 1): `ko-KR;q=0.9`
+    - ex) `Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7`
+  - 구체적인 것이 우선
+    - ex) `Accept: text/*, text/plain, text/plain;format=flowed, */*`
+      1. `text/plain;format=flowed`
+      2. `text/plain`
+      3. `text/*`
+      4. `*/*`
+
+### 전송 방식
+- 단순, 압축, 분할, 범위 전송으로 나뉨
+- 단순 전송: `Content-Length`를 제공(한 번에 요청하고 한 번에 받기)
+- 압축 전송: `Content-Encoding`, `Content-Length`
+- 분할 전송: `Transfer-Encoding`
+  - `Transfer-Encoding: chunked` (덩어리로 쪼개서 클라이언트에게 응답)
+  - Content-Length가 없어야 한다.
+- 범위 전송: `Content-Range`
+  - ex) `Content-Range: bytes 1001-2000 / 2000` (2000 bytes 중 1001-2000 구간 전송)
+
+### 일반 정보
+- **From**
+  - 유저 에이전트의 이메일 정보
+  - 잘 사용 X, 
+  - 검색 엔진 같은 곳에서 사용
+  - 주로 요청 헤더
+- **Referer**
+  - 이전 웹 페이지 주소
+  - A -> B로 이동시 `Referer: A` 정보를 헤더에 포함해서 요청
+  - 요청에 사용
+  - 유입 경로 분석 가능
+- **User-Agent**
+  - 유저 에이전트 애플리케이션 정보
+  - 클라이언트 정보(웹 브라우저 정보)
+  - 어떤 종류 브라우저에서 장애가 발생하는지 파악 가능
+  - 요청에 사용
+- **Server**
+  - 요청 처리하는 ORIGIN 서버의 소프트웨어 정보
+  - `ORIGIN`: 프록시 서버 말고 진짜 요청을 처리해주는 서버
+  - 응답에 사용
+  - ex) `Server: nginx`
+- **Date**
+  - 메시지가 발생한 날짜와 시간
+  - 응답에 사용
+
+### 특별한 정보
+- **Host** (중요, 필수값)
+  - 요청한 호스트 정보(도메인)
+  - **하나의 서버가 여러 도메인을 처리해야 할 때**
+  - **하나의 IP address에 여러 도메인이 적용되어 있을 때**
+  - 가상 호스트를 통한 여러 도메인을 처리하는 하나의 서버, 여러 애플리케이션 구동에 여러 도메인 사용
+- **Location**
+  - 페이지 리다이렉션
+  - `3xx` 응답시 같이 사용
+  - `201 (Created)`: 여기서는 요청에 의해 생성된 새로운 리소스 URI
+- **Allow**
+  - `405 (Method Not Allowed)` 응답에 같이 사용
+  - ex) `Allow: GET, HEAD, PUT`
+- **Retry-After**
+  - 유저 에이전트가 다음 요청을 하기까지 기다려야 하는 시간
+  - `503 (Service Unavailable)` 서비스 불능 응답시 같이 사용
+
+### 인증
+- **Authorization**
+  - 클라이언트 인증 정보를 서버에 전달
+  - ex) `Authorization: Basic xxxxxx`
+- **WWW-Authenticate**
+  - 리소스 접근시 필요한 인증 방법 정의
+  - `401 (Unauthorized)` 응답과 함께 사용
+
+### 쿠키
+- HTTP는 Stateless(무상태) 프로토콜
+- 클라이언트, 서버 요청/응답 완료시 연결 끊김
+- 서로 상태를 유지하지 않음
+- 여기서 **쿠키**, **세션** 개념이 적용되어 보완됨
+- 쿠키는 `Set-Cookie`, `Cookie` 헤더 사용
+
+#### 인증에 사용되는 쿠키
+- `set-cookie: sessionid=xxxxxxxx; expires=xxx; path=/; domain=google.com; Secure`
+- 서버에서는 세션 키값을 쿠키에 넣어서 보내준다.  
+
+#### 사용처
+- 사용자 로그인 세션 관리
+- 광고 정보 트래킹
+
+#### 단점 및 사용 방법
+  - 쿠키 정보는 항상 서버에 전송된다.
+  - 네트워크 트래픽 추가 유발
+  - 최소한의 정보만 사용해야 한다. (세션 id, 인증 토큰 등)
+  - 웹 브라우저 내부 데이터를 저장할 때 **웹 스토리지**(localStorage, sessionStorage)를 활용하기도 한다.
+  - 민감한 데이터는 저장하면 안됨
+
+#### 쿠기 생명주기
+- Expires
+- max-age
+- ex) `Set-Cookie: expires=xxxx;max-age=3600`(초 단위)
+
+#### 쿠키 도메인
+- 쿠키는 도메인을 지정할 수 있다.
+- 명시한 문서 기준 도메인 + 서브 도메인 포함
+  - `domain=example.org`: example.org, dev.example.org 쿠키도 접근 가능
+
+#### 쿠키 경로
+- ex) `path=/home`
+- 해당 경로를 포함한 하위 경로 페이지만 쿠키 접근
+- 일반적으로 루트로 지정 (`path=/`)
+
+#### 쿠키 보안
+- **Secure**
+  - https만 전송 (원래는 http, https 구분 X)
+- **HttpOnly**
+  - XSS 공격 방지
+  - javascript에서 접근 불가(`document.cookie`)
+  - HTTP 전송에만 사용
+- SameSite
+  - XSRF 공격 방지
+  - 요청 도메인과 쿠키에 설정된 도메인이 같은 경우에만 쿠키 사용
