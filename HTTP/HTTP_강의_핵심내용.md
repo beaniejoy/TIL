@@ -508,4 +508,150 @@
 ## :pushpin: HTTP 헤더2 - 캐시와 조건부 요청
 
 ### 캐시 기본 동작
+- 캐시 등장 배경
+  - 데이터가 변경되지 않아도 계속 네트워크 자원을 사용해서 데이터를 조회
+  - 인터넷 네트워크는 비용이 크고 느리다.
+  - 브라우저 로딩 속도 느림
+  - 느린 사용자 경험
+- 캐시 적용하면 위 4가지 단점을 보완할 수 있음
+- 캐시 유효 시간 초과시 서버를 통해 다시 데이터 조회 후 캐시 갱신
+```text
+cache-control: max-age=60
+```
 
+### 검증 헤더와 조건부 요청 1
+- 캐시 유효 시간 초과시 서버 요청하면 두 가지 상황 발생
+  - 서버에서 기존 데이터 변경 (A -> B)
+  - 서버에서 기존 데이터 변경 X (A -> A) 이 부분
+
+> 캐시 만료되어서 서버 요청해보니 기존과 같은 데이터라서 좀 아까운 면이 있음
+- 캐시 만료 후에도 서버에서 데이터를 변경 X
+- 저장해두었던 캐시를 재사용할 수 있음
+- `클라이언트 데이터 = 서버 데이터` 검증 방법이 필요
+  - **검증 헤더**를 이용하면 됨
+
+#### 캐시 검증 과정
+
+1. resource 첫 서버 요청
+```text
+HTTP/1.1 200 OK
+...
+cache-control: max-age=60
+Last-Modified: 2022년 06월 29일 18:30:30
+
+<body 내용>
+```
+- `Last-Modified`: 데이터가 마지막에 수정된 시간
+- 브라우저는 해당 헤더의 값을 가지고 캐시에 저장할 때 최종 수정일까지 저장
+
+<br>
+
+2. 캐시 만료 후 다시 서버 재요청
+```text
+GET /star.jpg
+...
+cache-control: max-age=60
+if-modified-since: 2022년 06월 29일 18:30:30
+```
+- 캐시 만료 후 서버에 요청할 때 검증을 할 수 있는 단서를 헤더로 보낸다.
+  - (`if-modified-since`)
+
+<br>
+
+3. 서버 검증 후 기본 캐시와 같은 데이터일 때의 응답
+```text
+HTTP/1.1 304 Not Modified
+...
+cache-control: max-age=60
+Last-Modified: 2022년 06월 29일 18:30:30
+```
+- 서버에서 클라이언트에서 보내준 검증 단서를 가지고 비교 및 검증 진행
+- 데이터가 바뀌지 않았으면 그대로 응답을 해주는데 **body 없이** `304` 코드로 응답한다.
+- **바디 내용 없이 헤더 내용만 보내는 것이기에 네트워크 부하 감소**
+
+<br>
+
+4. 클라이언트 캐시 사용
+- 클라이언트는 서버에서 응답해준 304 응답코드를 보고 기존 캐시 데이터를 사용
+- 캐시 유효 시간도 다시 갱신
+
+#### 정리
+- 검증 헤더: `Last-Modified`
+- 조건부 요청: `if-modified-since`
+- 위 두 개 헤더를 조합해서 캐시 검증
+
+### 검증 헤더와 조건부 요청 2
+- 검증 헤더
+  - 캐시 데이터와 서버 데이터가 같은지 검증하는 데이터
+  - `Last-Modified`, `ETag`
+- 조건부 요청 헤더
+  - `if-modified-since`, `if-unmodified-since` > `Last-Modified`
+  - `if-match`, `if-none-match` > `ETag`
+- 조건 만족시 `200 OK`
+- 조건 만족 X `304 Not Modified`  
+  `if-modified-since`: 만약 이후에 데이터가 수정되었나요? 조건 만족, 불만족으로 생각하면 된다.
+
+#### ETag 등장
+- `Last-Modified` 검증은 데이터 내용이 똑같아도 최종 수정일이 다르면 서버 데이터 요청이 진행된다.
+- 내용 변경이 없거나, 스페이스/주석 같은 내용에 대한 변경에 대해서 캐시 유지하고 싶은 경우도 존재
+- ETag: Entity Tag
+  - 캐시용 데이터에 임의의 버전 이름을 달아둔다.
+  - 데이터가 변경되면 이름을 바꾸어 변경(Hash 사용)
+  - ETag를 비교해서 캐시 사용 유무 결정
+```text
+ETag: "aaaaaaaa"
+```
+
+### 캐시와 조건부 요청 헤더
+- `Cache-Control`
+  - `max-age`: 캐시 유효 시간(sec 단위)
+  - `no-cache`: 데이터는 캐시 허용, 항상 원 서버(origin)에 검증 후 캐시 사용
+    - 캐시 프록시 서버가 중간에 있는데 중간 프록시 서버가 아닌 데이터를 직접 관리하는 서버를 원 서버(origin)라고 한다.
+  - `no-store`: 캐시 사용 X, 민감한 정보에 해당(메모리 사용 후 삭제)
+- `Pragma`(사용 X)
+  - HTTP 1.0 하위 호환, 잘 사용 X
+- `Expires`(사용 X)
+  - HTTP 1.0 부터 사용
+  - 하위 호환, 잘 사용 X
+  - 캐시 만료일을 정확한 날짜로 지정
+  - 지금은 `Cache-Control: max-age`로 권장(같이 사용시 `Expires`는 무시)
+
+### 프록시 캐시
+- **원(origin) 서버** 직접 접근
+  - origin 서버: 원래의 소스를 관리하고 있는 서버
+  - 많은 사용자들이 하나의 원서버에 접근해서 데이터 요청하면 비효율적
+- 중간에 **프록시 캐시 서버**를 도입
+- 프록시 캐시: `public cache` / 클라이언트 브라우저: `private cache`
+
+#### 프록시 캐시 관련 헤더 지시어
+- Cache-Control: public
+  - 응답이 프록시 캐시에 저장되어도 괜찮
+- Cache-Control: private
+  - 응답이 해당 사용자만을 위한 것, private에 저장(default)
+- Cache-Control: s-maxage
+  - 프록시 캐시에만 적용되는 max-age
+- Age: 60(HTTP 헤더)
+  - origin 서버 응답 후 프록시 캐시 내에 머문 시간(초)
+
+### 캐시 무효화
+- 확실한 캐시 무효화 응답
+  - `Cache-Control: no-cache, no-store, must-revalidate`
+  - `Pragma: no-cache` (HTTP 1.0 하위 호환)
+- Cache-Control
+  - `no-cache`: 위에 설명 참고(이것도 원서버에서 검증)
+  - `no-store`: 위에 설명 참고
+  - `must-revalidate`
+    - 캐시 만료 후 최초 조회시 원 서버에서 검증해야 함
+    - 원 서버 접근 실패시 오류 발생해야함(`504 Gateway Timeout`)
+    - 캐시 유효 시간이라면 캐시 사용
+
+#### no-cache vs must-revalidate
+<img width="1012" alt="Screen Shot 2022-06-29 at 7 59 08 PM" src="https://user-images.githubusercontent.com/41675375/176420928-26bdb058-02d8-41f8-a1e8-cc623630eb17.png">
+- `no-cache`인 경우 원서버에서 검증 과정을 거쳐야 함
+  - 프록시 캐시에서 원서버 접속 시도시 네트워크 단절인 경우 문제 발생
+  - `error or 200 OK`를 프록시 캐시에서 응답을 줄 수 있다.
+- `must-revalidate`
+  - 원 서버 접근 불가시 항상 오류 발생(`504 Gateway Timeout`)
+
+> 확실하게 캐시 무효화 응답을 하기 위해  
+> `Cache-Control: no-cache, no-store, must-revalidate`
