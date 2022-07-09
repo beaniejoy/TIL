@@ -6,6 +6,7 @@
 - revert
 - stash
 - remove file (remote repo)
+- mv (rename)
 
 <br>
 
@@ -105,3 +106,19 @@ $ git commit -m "Fixed untracked files"
 // 원격 저장소(origin)에 push
 $ git push origin master
 ```
+
+<br>
+
+## :pushpin: mv (rename으로 이력 남길 때)
+
+- 단순히 파일명을 수정하는 경우에 deleted, new file 로 이력이 남겨지게 됨
+- 파일명 수정 같은 경우 renamed 로 git 커밋을 남길 수 있음
+```bash
+$ git mv [대상 파일] [이름 바꿀 파일]
+$ git status
+On branch feature/beanie/5
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	renamed:    beanie_4.md -> beanie_4_5.md
+```
+- staging된 상태로 renamed가 추가된다.
