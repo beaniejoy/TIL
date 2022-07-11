@@ -46,7 +46,7 @@ $ git push -f origin [branch]
 ### soft, mixed
 - soft, mixed는 원하는 커밋으로 이력을 되돌리긴 하지만 중간에 이미 커밋된 이력들을 작업 공간으로 보여준다. (staged, unstaged)
 - soft: staged 상태로 돌림
-- mixed: unstaged 상태로 돌림'
+- mixed: unstaged 상태로 돌림
 
 ### hard
 - 과거 커밋으로 돌아갈 때 중간의 커밋된 내용들을 모두 없애고 깨끗한 상태로 과거로 돌아감
@@ -60,6 +60,13 @@ $ git reset [file]
 ```
 - `git add` 했던 내용들 중 다시 Unstage 영역으로 돌리고 싶은 파일이 있는 경우
 - reset 할 때 옵션을 붙이지 않으면 `--mixed`로 진행
+
+### 특정 커밋으로 reset
+```bash
+(develop) $ git reset --hard 0a4e067
+```
+- 특정 커밋으로 reset을 할 수 있음
+- 이 때는 `git log`로 원하는 reset 커밋 위치를 미리 알고 있어야 함 
 
 <br>
 
