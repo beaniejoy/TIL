@@ -10,27 +10,6 @@
 
 <br>
 
-## :pushpin: commit 수정하기
-
-```bash
-$ git commit --amend
-```
-
-- 최상위 커밋 내용을 수정하는 명령어
-- 이전의 커밋을 없애고 새로운 커밋으로 변경하는 것(이전 커밋은 이력에서 없어짐)
-- 누락된 커밋 내용이나 파일들이 있거나 오타 같은 내용에 대해 수정할 때 유용함  
-  (굳이 새 커밋으로 하지 않고 기존 커밋을 수정하고 싶을 때)
-
-```bash
-$ git commit --amend
-
-$ git push -f origin [branch]
-```
-- 원격 저장소에 push된 commit에 대해서 amend하고자 할 때 amend 기능 수행 후에 **force push**를 해야 한다.
-- **개인 개발 브랜치에서만 수행할 것**
-
-<br>
-
 ## :pushpin: cherrypick
 - 특정 커밋 내용만 가져다 사용하고 싶을 때
 - 기존 커밋 ID와 cherrypick으로 가져온 커밋 ID는 서로 다르다. (다른 커밋이라는 의미)
