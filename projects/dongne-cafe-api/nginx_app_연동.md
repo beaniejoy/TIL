@@ -59,4 +59,38 @@ $ brew services restart nginx
 - application(`:8080`) 실행한 상태로 `http://localhost/cafes` 호출
 - `80` -> `8080`(app)으로 전달되어 해당 응답값을 받아오는 것을 확인할 수 있다.
 
-<br>
+### nginx.conf 분리
+- nginx.conf 하나에 모든 설정을 집중하면 관리의 어려움이 존재
+- `include`를 통한 분리
+
+```bash
+http {
+    # nginx.conf 기본 설정 내용
+    # ...
+
+    include /usr/local/etc/nginx/conf.d/*.conf;
+    include /usr/local/etc/nginx/sites-enabled/*;
+}
+```
+```bash
+$ mkdir /usr/local/etc/nginx/conf.d/proxy_app.conf
+```
+- 로컬 mac 운영체제에서 brew로 nginx 설치시 `conf.d` directory가 존재하지 않을 수 있다.
+
+```bash
+server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+    }
+}
+```
+- proxy 설정하는 부분만 따로 떼어서 `proxy_app.conf`에 설정
+- 이렇게 설정한 후에 restart 진행
+
+### 도메인을 로컬로 적용하기
