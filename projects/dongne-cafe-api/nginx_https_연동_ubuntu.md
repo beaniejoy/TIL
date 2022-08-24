@@ -1,4 +1,4 @@
-# Nginx로 https 설정 test
+# Nginx로 https 설정 test (ububtu)
 
 - AWS
 - nginx
