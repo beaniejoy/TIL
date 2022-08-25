@@ -655,3 +655,9 @@ ETag: "aaaaaaaa"
 
 > 확실하게 캐시 무효화 응답을 하기 위해  
 > `Cache-Control: no-cache, no-store, must-revalidate`
+
+
+## :pushpin: 정리 및 주의점
+- `RFC 2616` 이거 보면 안됨
+- `RFC 7230 ~ 7235` 이걸 봐야 함
+  - https://tools.ietf.org/html/rfc7230
