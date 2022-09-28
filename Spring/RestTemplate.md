@@ -1,5 +1,7 @@
 # RestTemplate
 
+<br>
+
 ## 제너릭 타입으로 응답객체 받기
 
 ```java
@@ -23,6 +25,8 @@ ResponseWrapper<UserInfoResponse> userInfoResponseWrapper =
 ```
 - 이렇게 `ParameterizedTypeReference` 로 감싸서 보내야 한다.
 
+<br>
+
 ## 코틀린에서 제네릭 타입 넘기기
 ```kt
 val userInfoResponseWrapper: ResponseWrapper<UserInfoResponse> = 
@@ -33,3 +37,23 @@ val userInfoResponseWrapper: ResponseWrapper<UserInfoResponse> =
         object : ParameterizedTypeReference<ResponseWrapper<UserInfoResponse>>() {})
 ```
 - 코틀린에서 익명 클래스를 인자로 넘길 때 `object : 익명클래스 구현` 이렇게 앞에 `object`를 붙여야 한다.
+
+<br>
+
+## 에러 메시지 한글 깨짐 현상
+
+```kt
+try {
+    restTemplate.put(papiUri + uri, requestBody)
+} catch (e: HttpStatusCodeException) {
+    handleException(e)
+}
+```
+- `e.responseBodyAsString` 에서 한글로 들어온 에러메시지가 깨지는 현상 발생
+- 기본적으로 `ISO_8859_1`로 인코딩되기 때문
+- `UTF-8`로 변경해야할 필요 있음
+
+```kt
+val errorMessage = String(e.responseBodyAsByteArray, StandardCharsets.UTF_8)
+```
+- byteArray로 받아서 UTF-8로 인코딩
