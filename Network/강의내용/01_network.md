@@ -78,3 +78,19 @@
 ```text
 Ethernet | IPv4 | TCP | data
 ```
+
+<br>
+
+## :pushpin: traceroute
+
+```shell
+$ traceroute 8.8.8.8
+ 1 
+ ...
+ ...
+ ...
+ 9  * * *
+10  dns.google (8.8.8.8)  34.268 ms  32.200 ms  31.895 ms
+```
+google DNS 서버로 가는 라우트 경로 표시  
+1번에 나오는 주소는 우리집 router 주소(공유기)
