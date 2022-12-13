@@ -43,3 +43,43 @@ $ ssh root@localhost -p 20022
 혹은
 $ docker exec -it ansible-server bash
 ```
+
+### ssh 설정
+
+ansible-server 안에서 docker-server에 원격 접속을 하려고 할 때
+```shell
+$ ssh root@172.17.0.4
+```
+이렇게 하면 되는데 매번 해당 서버의 비밀번호를 치고 들어가야 한다는 단점이 있다.  
+
+ssh key를 생성하고 docker-server에도 배포하는 방식으로 해서 키 교환하여 ssh 접속시 비밀번호 안쳐도 되게끔 구성해보자
+```shell
+$ ssh-keygen
+$ ssh-copy-id root@172.17.0.4
+```
+- `ssh-keygen`: 해당 로컬호스트에 공용키, 개인키 쌍 생성
+- `ssh-copy-id`
+  - 로컬호스트의 공용 키(public key)를 원격 호스트의 `authorized_keys` 파일에 복사
+  - `ssh-copy-id` 또한 알맞은 권한을 원격 호스트의 홈, `~/.ssh`, `~/.ssh/authorized_keys`에 부여
+
+<br>
+
+## :pushpin: Ansible 실행해보기
+
+실행시 옵션내용
+- `-i`(`--inventory-file`)
+  - 적용될 호스트들에 대한 파일 정보 설정
+  - 기본적으로 `/etc/ansible/hosts` 를 바라보는데 해당 옵션을 설정하면 해당 파일로 호스트들이 설정됨
+- `-m`(`--module-name`): 모듈 선택
+- `-k`(`--ask-pass`): 관리자 암호 요청
+- `-K`(`--ask-become-pass`): 관리자 권한 상승
+- `--list-hosts`: 적용되는 호스트 목록
+
+ansible의 멱등성 특징
+- 같은 설정을 여러 번 적용하더라도 결과가 달라지지 않는 성질
+
+```shell
+$ echo -e "[mygroup]\n172.20.10.11" >> /etc/ansible/hosts
+```
+위 명령어를 실행했을 때 hosts 파일 내용 아래에 append 되어 계속 붙여질 것이다.  
+그런데 ansible을 통해 해당 명령어를 실행하면 한 번만 실행하게 된다.
