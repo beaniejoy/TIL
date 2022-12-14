@@ -55,7 +55,7 @@ $ ssh root@172.17.0.4
 ssh key를 생성하고 docker-server에도 배포하는 방식으로 해서 키 교환하여 ssh 접속시 비밀번호 안쳐도 되게끔 구성해보자
 ```shell
 $ ssh-keygen
-$ ssh-copy-id root@172.17.0.4
+$ ssh-copy-id root@172.17.0.
 ```
 - `ssh-keygen`: 해당 로컬호스트에 공용키, 개인키 쌍 생성
 - `ssh-copy-id`
@@ -75,7 +75,7 @@ $ ssh-copy-id root@172.17.0.4
 - `-K`(`--ask-become-pass`): 관리자 권한 상승
 - `--list-hosts`: 적용되는 호스트 목록
 
-ansible의 멱등성 특징
+### ansible의 멱등성 특징
 - 같은 설정을 여러 번 적용하더라도 결과가 달라지지 않는 성질
 
 ```shell
@@ -83,3 +83,51 @@ $ echo -e "[mygroup]\n172.20.10.11" >> /etc/ansible/hosts
 ```
 위 명령어를 실행했을 때 hosts 파일 내용 아래에 append 되어 계속 붙여질 것이다.  
 그런데 ansible을 통해 해당 명령어를 실행하면 한 번만 실행하게 된다.
+
+### Ansible 모듈 사용
+
+```shell
+$ ansible all -m ping
+172.17.0.3 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+172.17.0.4 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+```
+- `/etc/ansible/hosts`에 설정했던 호스트 정보들 모두(all)에게 ping을 날리게 된다.
+- all이 아닌 특정 그룹에다가만 ping 명령을 보낼 수 있다.
+- 만약 서버응답이 제대로 오지 않으면 `UNREACHABLE` 에러를 반환받게 된다.
+
+```shell
+// 각각의 서버의 메모리 상태를 보여준다.
+$ ansible all -m shell -a "free -h"
+172.17.0.4 | CHANGED | rc=0 >>
+              total        used        free      shared  buff/cache   available
+Mem:          5.8Gi       810Mi       4.0Gi       359Mi       1.0Gi       4.4Gi
+Swap:         1.0Gi          0B       1.0Gi
+172.17.0.3 | CHANGED | rc=0 >>
+              total        used        free      shared  buff/cache   available
+Mem:          5.8Gi       810Mi       4.0Gi       359Mi       1.0Gi       4.4Gi
+Swap:         1.0Gi          0B       1.0Gi 
+```
+
+```shell
+// 각각의 호스트 서버에 지정된 파일을 원하는 디렉토리에 복사
+$ ansible all -m copy -a "src=./test.txt dest=/tmp"
+```
+
+```
+// 각각의 호스트 서버에 원하는 패키지를 설치할 수 있다.
+$ ansible devops -m yum -a "name=httpd"
+$ yum list installed | grep httpd
+```
+위의 ansible 명령어를 통해 host로 등록된 여러 서버에 한꺼번에 설정작업을 할 수 있다.
