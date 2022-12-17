@@ -44,7 +44,7 @@ git > Jenkins build > copy .war to docker-server > docker build
       command: docker build -t cicd-project-ansible .
       args:
         chdir: /root
-    - name: create a container using cicd-project-ansible image
+    - name: create a  container using cicd-project-ansible image
       command: docker run -d --name my_cicd_project -p 8080:8080 cicd-project-ansible
 ```
 docker build 후, run 실행
@@ -57,3 +57,38 @@ ansible-playbook -i hosts first-devops-playbook.yml
 ```
 - Jenkins 프로젝트 생성 후 빌드 후 조치에 설정 필요
   - **Exec command**에 ssh transfer 이후 실행할 명령어 설정해야함
+- Poll SCM 설정
+  - `* * * * *` 으로 설정해서 1분마다 git repository에 새로운 커밋이 있나 polling check
+
+<br>
+
+## :pushpin: Playbook 파일 내용 수정
+cicd-project repository의 `index.jsp` 내용을 바꿔서 커밋하면 Poll SCM 설정에 의해 1분뒤 바뀐 커밋을 감지  
+Jenkins에서 받아와서 빌드 후 ansible-server로 war 파일 보내고 playbook 파일 실행을 하게 되는데 에러 발생  
+이미 기존에 실행되고 있는 docker container가 있기 때문에 같은 포트로 새로운 container를 실행할 수 없는 것이다.  
+이에 대해서 playbook 파일에 container 실행 중지, 삭제, image 삭제 내용을 전처리 작업으로 추가 설정해주어야 한다.
+
+```yml
+---
+- hosts: all
+  tasks:
+    - name: stop current running container
+      command: docker stop my_cicd_project
+      ignore_errors: yes
+
+    - name: remove stopped container
+      command docker rm my_cicd_project
+      ignore_errors: yes
+
+    - name: remove current docker image
+      command: docker rmi cicd-project-ansible
+      ignore_errors: yes
+
+    - name: build a docker image with deployed war file
+      command: docker build -t cicd-project-ansible .
+      args:
+        chdir: /root
+
+    - name: create a container using cicd-project-ansible image
+      command: docker run -d --name my_cicd_project -p 8080:8080 cicd-project-ansible
+```
