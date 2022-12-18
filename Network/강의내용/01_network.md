@@ -1,4 +1,22 @@
-# 네트워크
+# 네트워크 기초
+
+## Table of Contents
+
+- [네트워크 기초](#네트워크-기초)
+  - [Table of Contents](#table-of-contents)
+  - [:pushpin: 네트워크 무엇인가](#pushpin-네트워크-무엇인가)
+  - [:pushpin: 인터넷?](#pushpin-인터넷)
+  - [:pushpin: 네트워크 분류](#pushpin-네트워크-분류)
+    - [크기에 따른 분류](#크기에-따른-분류)
+      - [LAN, WAN](#lan-wan)
+    - [연결 형태에 따른 분류](#연결-형태에-따른-분류)
+  - [:pushpin: 네트워크 통신 방식](#pushpin-네트워크-통신-방식)
+  - [:pushpin: 네트워크 프로토콜](#pushpin-네트워크-프로토콜)
+    - [여러 프로토콜](#여러-프로토콜)
+    - [패킷](#패킷)
+  - [:pushpin: traceroute](#pushpin-traceroute)
+
+<br>
 
 ## :pushpin: 네트워크 무엇인가
 
