@@ -92,3 +92,78 @@ Jenkins에서 받아와서 빌드 후 ansible-server로 war 파일 보내고 pla
     - name: create a container using cicd-project-ansible image
       command: docker run -d --name my_cicd_project -p 8080:8080 cicd-project-ansible
 ```
+
+<br>
+
+## :pushpin: Ansible 이용한 Docker 이미지 관리
+
+```shell
+$ docker login
+```
+docker 계정 인증 먼저 진행
+
+```yml
+(create-cicd-devops-image.yml)
+---
+- hosts: all
+  tasks:
+    - name: create a docker image with deployed war file
+      command: docker build -t hbleejoy/cicd-project-ansible .
+      args:
+        chdir: /root
+
+    - name: push the image on Docker Hub
+      command: docker push hbleejoy/cicd-project-ansible
+
+    - name: remove the docker image from the ansible server
+      command: docker rmi hbleejoy/cicd-project-ansible
+      ignore_errors: yes
+```
+docker image (tag) 생성 이후 Docker Hub에 push하는 ansible playbook file 작성
+위 내용 테스트가 잘 진행되었으면 다음 내용 수행
+```yml
+(create-cicd-devops-container.yml)
+---
+- hosts: all
+  tasks:
+    - name: stop current running container
+      command: docker stop my_cicd_project
+      ignore_errors: yes
+
+    - name: remove stopped container
+      command: docker rm my_cicd_project
+      ignore_errors: yes
+
+    - name: remove current docker image
+      command: docker rmi hbleejoy/cicd-project-ansible
+      ignore_errors: yes
+
+    - name: pull the newest docker image from Docker Hub
+      command: docker pull hbleejoy/cicd-project-ansible
+
+    - name: create a container using cicd-project-ansible image
+      command: docker run -d --name my_cicd_project -p 8080:8080 hbleejoy/cicd-project-ansible
+```
+기존 `cicd-project-ansible` image로 build 후 run 했던 내용을  
+Docker Hub로부터 pull 받고 run하는 내용으로 수정
+
+```shell
+$ ansible-playbook -i hosts create-cicd-devops-image.yml --limit 172.17.0.3
+```
+ansible-server(172.17.0.3)로 한정해서  ansible 잘 실행되는지 확인
+
+```shell
+$ ansible-playbook -i hosts create-cicd-devops-container.yml --limit 172.17.0.4
+```
+이번에는 docker-server(172.17.0.4)에 container playbook 파일내용을 적용해보자  
+docker stop, rm, rmi 작업이 오류가 나올 수 있는데 정상적인 오류다.  
+(docker-server에는 images, process가 아무것도 없기 때문에 발생할 수 있는 오류)
+
+### 정리
+```shell
+$ ansible-playbook -i hosts create-cicd-devops-image.yml --limit 172.17.0.3
+$ ansible-playbook -i hosts create-cicd-devops-container.yml --limit 172.17.0.4
+```
+- ansible-server에서 먼저 docker image 생성 후 Docker Hub에 push
+- docker-server에서는 push 된 docker image를 pull 받아오고 해당 image로 실행을 한다.
+- 이걸 jenkins 빌드 후 조치에서 Exec command에 설정가능
