@@ -54,13 +54,13 @@ em
 .createQuery("selct o from Order o", Order::class.java)
 .resultList
 ```
-- Order entity에 Member entity가 EAGER 페치 전략으로 설정되어 있을 때
-- JPQL로 Order entity 단순 조회
+- `Order` entity에 Member entity가 EAGER 페치 전략으로 설정되어 있을 때
+- JPQL로 `Order` entity 단순 조회
 - JPQL 보고 분석해서 SQL 쿼리 작성(`select * from order`)
 - JPA가 쿼리 결과내용을 보고 Order Entity 작성
-- Order의 Member 엔티티가 EAGER로 묶여있음. 해당 엔티티도 조회해야 한다.
-- Member 엔티티를 영속성 컨텍스트에서 찾고 없으면 쿼리 요청
-- 결국 Order 개수(`N`)만큼 Member 조회 쿼리를 요청하게 된다.
+- `Order`의 `Member` 엔티티가 EAGER로 묶여있음. 해당 엔티티도 조회해야 한다.
+- `Member` 엔티티를 영속성 컨텍스트에서 찾고 없으면 쿼리 요청
+- 결국 `Order` 개수(`N`)만큼 Member 조회 쿼리를 요청하게 된다.
   - `select * from Member where id = ?`
 
 > EAGER로 묶였다 해도 N + 1 문제가 완전하게 해결된 것은 아닌 것이다.  
