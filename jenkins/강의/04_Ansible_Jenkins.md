@@ -77,7 +77,7 @@ Jenkins에서 받아와서 빌드 후 ansible-server로 war 파일 보내고 pla
       ignore_errors: yes
 
     - name: remove stopped container
-      command docker rm my_cicd_project
+      command: docker rm my_cicd_project
       ignore_errors: yes
 
     - name: remove current docker image
