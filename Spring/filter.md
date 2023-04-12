@@ -1,5 +1,9 @@
 # Filter
 
+## :pushpin: OncePerRequestFilter
+요청(request)당 한 번 filter 동작  
+Filter, GenericFilter는 여러 번 동작 가능(?)
+
 ## Custom Filter 구현하기
 
 - `Filter` 인터페이스 구현, `GenericFilterBean` 상속받아서 Filter를 만드는 방법 존재
