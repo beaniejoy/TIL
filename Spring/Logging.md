@@ -7,7 +7,7 @@
 
 <br>
 
-## logback-spring.xml
+## :pushpin: logback-spring.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -20,7 +20,7 @@
 
 <br>
 
-## MDC 이용한 logback pattern 적용
+## :pushpin: MDC 이용한 logback pattern 적용
 
 - `MDC(Mapped Diagnostic Context)`
 - 멀티 쓰레드 환경에서 현재 실행중인 쓰레드에 대한 메타정보를 따로 관리할 수 있는 저장소
@@ -32,7 +32,7 @@
 
 ```kotlin
 @Component
-@Order(1)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 class LoggingFilter: OncePerRequestFilter() {
     private val log = KotlinLogging.logger {}
 
@@ -64,7 +64,7 @@ MDC 등록 후 `logback-spring.xml` 설정파일에서 pattern 등록할 때 MDC
 
 <br>
 
-## Filter 순서 조정
+## :pushpin: Filter 순서 조정
 - Spring Security와 같이 사용한다면 filter 순서 조정이 필요하다.
 - request시 할당받은 id를 쓰레드별로 지정해야 하는데 spring security custom filter에서는 이를 가져오지 못한다.
 - spring security filter는 기본적으로 order 우선순위 값이 `-100`이라서 가장 먼저 수행된다.
