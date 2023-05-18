@@ -1,5 +1,13 @@
 # SHELL & Command
 
+- Redirection
+- history
+- path
+- shell 부팅 시퀀스
+- shell script
+
+<br>
+
 ## :pushpin: Redirection
 
 ### input
@@ -183,3 +191,9 @@ $ ./test2.sh /etc/passwd
   - `$?`: 실행결과
   - `$1, $2, ...`: 입력 인자
   - `$*`: 입력 인자 모두
+
+<br>
+
+## :pushpin: References
+
+- [Linux - CentOS 리눅스 주요 특수 기호(메타문자)](https://hack-cracker.tistory.com/26)
