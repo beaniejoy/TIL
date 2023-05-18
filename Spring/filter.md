@@ -35,7 +35,7 @@ class JwtAuthenticationFilter(
 ## :pushpin: Caching Request, Response body
 
 본래 request, response body 내용은 핸들러에서 body를 받기 전에 읽으면 실제 컨트롤러에서 못 읽게 된다.
-ContentCachingRequestWrapper, ContentCachingResponseWrapper 활용
+`ContentCachingRequestWrapper`, `ContentCachingResponseWrapper` 활용
 ```kotlin
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
