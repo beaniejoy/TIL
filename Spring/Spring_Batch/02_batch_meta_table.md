@@ -35,6 +35,7 @@ spring:
   - `JobInstance` 클래스와 매핑
 - `BATCH_JOB_EXECUTION`
   - job 실행되는 동안 시작/종료 시간 job 상태 등 관리
+  - 1개의 job은 N개의 batch_job_execution을 관리하게 된다.
   - `JobExecution` 클래스와 매핑
 - `BATCH_JOB_EXECUTION_PARAMS`
   - job 실행을 위해 주입된 param 정보 저장
@@ -53,10 +54,14 @@ spring:
 
 ## :pushpin: Job 실행
 
-- **JobExecution**
-  - JobExecution은 parameter가 같으나 다르나 항상 새롭게 생성
+- **JobExecution** - `BATCH_JOB_EXECUTION`
+  - `JobExecution`은 parameter가 같으나 다르나 항상 새롭게 생성
   - Job이 실행되면 `BATCH_JOB_EXECUTION` 테이블에 데이터 새로 생성됨
-- **JobInstance**
+- **JobInstance** - `BATCH_JOB_INSTANCE`
   - 같은 parameter로 Job 실행시 이미 생성된 JobInstance가 실행  
-    단 `RunIdIncrementer` 설정시 항상 새로운 JobInstance 실행
+    단 `RunIdIncrementer` 설정시 항상 새로운 JobInstance 실행 (항상 다른 run.id parameter로 설정)
   - 다른 parameter로 Job 실행시 새로운 JobInstance 생성
+  - 같은 parameter로 실행시 같은 JobInstance 재실행
+- **JobParameters** - `BATCH_JOB_EXECUTION_PARAMS`
+- **ExecutionContext** - `BATCH_JOB_EXECUTION_CONTEXT`
+  - 같은 job 안에서 step들에게 내용을 공유할 수 있음

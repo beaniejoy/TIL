@@ -1,7 +1,5 @@
 # Spring Batch Basic
 
-- fastcampus 강의 필기내용
-- [my github repo](https://github.com/beaniejoy/test-project-repository/tree/main/_courses/spring-batch-basic)
 
 <br>
 
@@ -12,6 +10,13 @@
 - ExecutionContext
 - Chunk
 - JobParmeters
+
+<br>
+
+## :pushpin: Spring Batch 간단한 구조
+
+- `JobLauncher` > `Job` 실행 > `Step` 실행
+- 위 모두 JobRepository와 연관되어 있는데 spring batch metadata를 관리하는 table과 연동
 
 <br>
 
@@ -87,10 +92,10 @@ public Step helloStep() {
 - `StepBuilderFactory`를 통해 Step 생성
 - Job의 세부 실행 단위, N개가 등록돼 실행
 - Step의 실행 단위
-  - Task
+  - `Task`
     - 하나의 작업 기반
     - 10000개 데이터를 한꺼번에 해도 무리가 없다고 판단할 때 Task로 작업
-  - Chunk
+  - `Chunk`
     - 하나의 큰 덩어리를 n개씩 나눠서 실행
     - 10000개 데이터 한꺼번에 하기엔 무리 -> 1000개씩 나눠서 실행
   - Task도 Chunk처럼 페이징 처리할 수 있지만 명확히 책임을 나눠서 실행할 수 있다.
