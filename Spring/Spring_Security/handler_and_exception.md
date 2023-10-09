@@ -2,8 +2,6 @@
 
 - SuccessHandler
 - FailureHandler
-- 
-
 - Spring Security는 SuccessHandler, FailureHandler를 지원
 
 <br>
