@@ -1,0 +1,61 @@
+# Dart 기본 개념 필기
+
+## 변수 및 타입
+
+```dart
+bool isTrue;
+isTrue = true;
+```
+이렇게 먼저 선언하고 나중에 값 할당 가능
+
+```dart
+Null thisIsNull = null;
+```
+dart 언어에는 Null 형이 따로 존재(신기)
+
+```dart
+var value = 1;
+value = 'is Error?';
+//Error: A value of type 'String' can't be assigned to a variable of type 'int'.
+```
+kotlin 처럼 var 형이 존재  
+재할당이 가능하긴한데 처음 할당 했던 타입의 값을 넣어야 한다.
+
+```dart
+dynamic value = 1;
+value = 'Hello!!'; // OK!
+```
+최초 할당한 값의 타입과 다른 타입의 값을 재할당해도 에러발생 X
+
+### Null Safety 타입
+Dart 2.12 버전부터 도입
+
+```dart
+// Nullable Type
+int? double? bool? String?
+```
+kotlin과 유사해 보임
+
+```dart
+// Non-nullable Type
+int!, double!, bool!, String!
+```
+
+<br>
+
+## Class
+
+```dart
+// default constructor
+// named constructor
+class Point {
+  double x;
+  double y;
+
+  Point(this.x, this.y);
+}
+
+void main() {
+  Point point = Point(1, 2);
+}
+```
