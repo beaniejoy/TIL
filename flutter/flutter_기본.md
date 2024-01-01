@@ -59,3 +59,19 @@ $ fvm global 3.16.3 # global version 설정
 $ cd [Android_studio_project_path]
 $ fvm use 3.16.3 # 특정 flutter 프로젝트에서 사용할 버전 설정 가능(local)
 ```
+fvm으로 flutter 명령어 실행하기
+
+```shell
+$ fvm flutter --version
+$ fvm flutter create [app-name]
+```
+
+<br>
+
+## Flutter 패키지 추가
+
+```shell
+$ fvm flutter pub add [package name]
+```
+터미널에서 위에 내용대로 실행하는 방법도 있고 `pubspec.yaml`에 명시적으로 추가하는 방법이 있음
+
