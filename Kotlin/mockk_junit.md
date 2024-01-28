@@ -4,7 +4,6 @@
 testImplementation("io.mockk:mockk:${Version.Deps.MOCKK}")
 ```
 
-<br>
 
 ## Injections
 
@@ -24,7 +23,6 @@ class RegisterPrayerServiceTest(
 }
 ```
 
-<br>
 
 ## stub
 
