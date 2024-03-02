@@ -205,3 +205,32 @@ host의 특정 디렉토리가 container의 root 디렉토리가 되는데 만�
   - 미리 할당해둔 저장소를 컨테이너에 연결, 필요한 만큼 프로비져닝(?)
   - 여러 컨테이너가 같은 저장 공간 동시 참조 가능
   - 기본적으로 네트워크 저장소 형태로 동작 >> 성능, 비용 고려해야한다.
+
+<br>
+
+## CRD를 이용한 Kubernetes의 확장과 플러그인
+
+argo, fluentd, helm 등 여러 확장 플러그인들이 존재
+
+- **custom resource definition(CRD)**
+
+사용자가 직접 선언해서 사용할 수 있도록 확장한 kube 객체
+ex) cpu 특정 퍼센테이지 이하일 때만 해당 command를 실행시켜주는 객체 스페을 정의가능
+
+- operator
+
+CRD와 쿠베 api를 연결해주는 역할(CRD의 바뀐 스펙을 확인하고 kube api를 이용해 조정)  
+ex) kube api를 이용해 cpu 현재 상태를 계속 체크하고 CRD를 실행시켜주는 api를 호출
+
+- **API Aggregation**
+
+별도의 API Server를 만들어서 kube API를 확장
+
+- Custom Resource: 선언적
+- API Aggregation: 명령형
+
+또한 다음 개념도 존재
+
+- **CSI(Container Storage Interface)**: 일종의 volume storage를 이용할 수 있도록 해주는 driver 역할
+- **CNI(Container Network Interface)**: network 관련 plugin, 보통 전체 쿠베 환경에서 하나의 CNI가 존재
+- **Device Plugin**: 하드웨어 플러그인, 일부 노드에만 GPU가 존재한다면 이걸 사용할 수 있도록 해줌, kube에서 지원하지 않는 하드웨어에 대해 인식과 제어가 가능하도록 해주는 plugin, 필요에 의해 가끔 설치해서 사용하는 경우 존재
