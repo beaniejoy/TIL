@@ -35,8 +35,9 @@ spec:
 - `restartPolicy`: `OnFailure`, `Never` 둘 중 하나 취급
   - `OnFailure`: container가 정상 종료 되지 않은 경우 container 자체를 재시작시킴(파드는 같은 파드)
   - `Never`: backoffLimit이 설정된 상황에서 파드 자체를 죽이고 다시 새로운 파드 띄워서 실행, 노드 포지션 자체도 변경될 가능성 존재
-  - `backoffLimit`(default 6): 몇 번까지 재시작을 수행할 것인가(파드든, 컨테이너든)
+- `backoffLimit`(default 6): 몇 번까지 재시작을 수행할 것인가(파드든, 컨테이너든)
   - 배치 실패한 경우 그냥 실패한 채로 내버려두는 경우를 위해 **backoffLimit을 1**로 설정하면 될듯
+  - 파드든, 컨테이너든 몇 번의 실행을 할 것인지 결정(초과하는 경우 해당 작업을 마지막으로해서 종료)
 - `activeDeadlineSeconds`: 작업을 생성하고 끝날 때까지의 시간, 이후로 넘어가면 timeout
 - `ttlSecondsAfterFinished`: 실행된 잡 객체가 성공, 실패 결과 이후 다시 실행될 여지가 없는 경우 종료된 작업을 정리해주는 시간(설정하는 걸 추천, 안하면 수동으로 정리해주어야 한다.)
 
