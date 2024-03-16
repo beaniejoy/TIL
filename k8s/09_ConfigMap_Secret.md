@@ -103,3 +103,25 @@ env 안에 valueFrom을 통해 ConfigMap, Secret 객체를 가져올 수 있다.
 - key: 설정 객체 내에 정의된 설정의 키
 
 환경변수와 다른 점은 여러 컨테이너에서 한꺼 번에 관리 가능, 유지보수 측면에서도 좋다.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+  - name: my-container
+    image: my-image
+    volumeMounts:
+    - name: config-volume
+      mountPath: /config-files
+  volumes:
+  - name: config-volume
+    configMap:
+      name: my-config
+      items:
+      - key: welcome-script
+        path: "welcome.sh"
+```
+configMap 객체를 volume과 연결해서 사용 가능
