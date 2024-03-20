@@ -81,3 +81,51 @@ resources:
 `storageClassName`: 명시적으로 StorageClass를 지정하고 싶을 때  
 selector 같이 조건에 맞는 StorageClass를 지정할 수도 있는 것 같음
 
+```yaml
+# Pod spec
+spec:
+  containers:
+  - name: my-container
+    image: nginx
+    volumeMounts:
+    - name: my-storage
+      mountPath: /data
+  volumes:
+  - name: my-storage
+    persistentVolumeClaim:
+      claimName: my-dynamic-pvc
+```
+요거 역시 pvc는 추상화된 형태이기 때문에 pod 입장에서는 신경쓰지 않아도된다.
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+...
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        volumeMounts:
+        - name: dynamic-volume
+          mountPath: /tmp/dynamic
+  volumeClaimTemplates:
+  - metadata:
+      name: dynamic-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 100Gi
+```
+위와 같이 StorageSet에도 dynamic volume을 설정할 수 있고
+`StatefulSet-0`, `StatefulSet-1`, ... 이런 식으로 새로 생성될 때마다 스펙에 정의한 volume대로 새로 저장공간을 생성해서 할당을 받게 된다.
+
+고려해야할 것이 DB같은 것을 StatefulSet으로 사용하게 되면 해당 파드가 떠있는 노드와 볼륨 스토리지와 같은 가용영역안에 존재해야하는데 pod가 내려가고 다시 뜰 때 완전히 다른 노드에 뜰 수가 있다.  
+이렇게 되면 기존 볼륨 스토리지와 전혀 다른 볼륨 스토리지에 동적으로 할당 받게 되는 불상사가 발생할 수 있다.
+
+이것을 방지하려면 selector, affinity 같은 것들을 통해 특정 가용영역, 노드에 고정되어 파드가 뜰 수 있도록 설정하는 것이 좋다.
+(혹은 EFS같은 스토리지 서비스를 사용하는 것도 고려해볼 수 있다. 참고만)
+
+`volumeClaimTemplates`은 StatefulSet에서만 사용 가능
+
