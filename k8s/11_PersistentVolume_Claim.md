@@ -86,7 +86,7 @@ spec:
   - ReadWriteOnce(RWO): 하나의 노드에서만 접근, 쓰기 가능(하나의 노드에 여러 파드인 경우 모두 접근 가능)
   - ReadWriteOncePod(RWOP): 하나의 파드에서만 접근, 쓰기 가능
 - `persistentVolumeReclaimPolicy`: 사용이 끝난 PV를 어떻게 할 것인지
-  - PVC 자체의 라이프사이클이 끝나는 경우가 존재하는데 그 때 PV는 더이상 사용이 안됨
+  - **PVC 자체의 라이프사이클이 끝나는 경우가 존재하는데 그 때 PV는 더이상 사용이 안됨**(PVC 기준)
   - 만약 이전에 사용했던 데이터들이 다른 PVC에서 접근하는 경우 영향을 줄 수 있는데 해당 정책으로 설정가능
   - `Retain`: PV 내부 내용 유지
   - `Delete`

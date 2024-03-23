@@ -129,3 +129,8 @@ kind: StatefulSet
 
 `volumeClaimTemplates`은 StatefulSet에서만 사용 가능
 
+<br>
+
+## 궁금증
+
+PV 객체를 설정할 때 hostPath로 설정하게되면 **어떤 디렉토리가 PV로 사용되는 것인지 궁금**
