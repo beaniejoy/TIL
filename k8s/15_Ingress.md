@@ -105,7 +105,4 @@ spec:
 - `pathType: Prefix`: 문자열 그자체의 startsWith 같은 개념이 아니다. 경로상의 prefix  
   - `example.com/user/list`: 조건 부합  
   - `example.com/user-list`: 조건 부합 X (startsWith 개념이 아니다.)
-
-
-<br>
-
+- `backend`: path 조건에 부합하는 트래픽을 어떤 서비스에 보내줄 것인지 설정
