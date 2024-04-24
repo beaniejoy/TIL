@@ -121,4 +121,24 @@ roleRef:
   name: pod-reader
   apiGroup: rbac.authorization.k8s.io
 ```
-Account와 Role binding
+Account와 Role binding  
+subjects로 되어있는데 role 하나에 여러 개 serviceAccount들을 묶을 수 있다.  
+role 여러 개를 매핑하고 싶어서 RoleBinding 여러 개로 나오는게 좋은 practice가 아니다.  
+그래서 다 포괄하는 새로운 Role을 만들어서 바인딩하는 것이 관리측면에서 더 좋을 수 있다.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  namespace: default
+spec:
+  serviceAccountName: my-service-account
+  containers:
+  - name: my-container
+    image: my-image
+```
+여기서 serviceAccountName에 지정된 serviceAccount에 따른 권한은  
+해당 Pod 안에 어플리케이션(Spring, node.js 등)이 kube cluster api에 접근할 수 있는 권한을 의미하는 것임
+(실행 중인 어플리케이션이 동적으로 kube api 접근할 때, 근데 잘 사용되는지는 모르겠음)
+
