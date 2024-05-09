@@ -56,3 +56,32 @@ Pod의 생명주기가 짧다는 것을 인지해야 함 > 영속성을 가진 �
 
 권한 같은 경우도
 Pod 스펙에서 별도 권한 설정을 하지 않으면 애플리케이션에서는 루트 권한을 가지게 되어 권한 이슈는 따로 발생하지 않는다.
+
+<br>
+
+## k8s와 데이터베이스
+
+데이터베이스는 보통 writable(source), Readonly(replica) set으로 구분이 된다.
+
+**StatefulSet을 이용한 DB 구성**
+각 파드 단위로 역할을 분배해 PV 연결
+
+하지만 여기에는 문제가 있음
+
+**1. source replica간에 failover 상황시 문제**
+
+```
+db-0.database-service.default.svc.cluster.local (source)
+db-1.database-service.default.svc.cluster.local (replica)
+```
+이런 식으로 application에서 연결해서 사용하고 있는데
+source에 문제가 발생해서 replica가 승격되면 애플리케이션에서는 db-1이 source가 되어버린다. 하지만 애플리케이션 단에서는 이를 감지 못한다.
+
+**2. DB pod가 다른 노드에 실행될 때**
+
+어떤 인스턴스가 장애가 발생하게 되어 pod가 다른 노드로 다시 배치 되었을 때 다른 PV와 연결될 수 있음
+
+PV는 Node에 종속되지 않는 형태로 사용해야 한다.
+
+> 결국 k8s cluster에 DB를 구성하지 않고 **외부 DB를 사용**
+> 개발용 DB만 클러스터 내부에서 설치해서 사용해볼 순 있다.
