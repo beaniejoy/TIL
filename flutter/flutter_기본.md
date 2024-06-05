@@ -75,3 +75,10 @@ $ fvm flutter pub add [package name]
 ```
 터미널에서 위에 내용대로 실행하는 방법도 있고 `pubspec.yaml`에 명시적으로 추가하는 방법이 있음
 
+<br>
+
+## Flutter build runner
+
+```shell
+flutter pub run build_runner build
+```
