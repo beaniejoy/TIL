@@ -82,3 +82,16 @@ $ fvm flutter pub add [package name]
 ```shell
 flutter pub run build_runner build
 ```
+
+<br>
+
+# flutter doctor 오류 항목
+
+```
+[!] Android toolchain - develop for Android devices (Android SDK version 34.0.0)
+  • Android SDK at /Users/beanie.joy/Library/Android/sdk
+  ✗ cmdline-tools component is missing
+    Run `path/to/sdkmanager --install "cmdline-tools;latest"`
+    See https://developer.android.com/studio/command-line for more details.
+```
+Android Studio 들어가서 `Android SDK` > `SDK Tools` > `Android SDK Command-line Tools` 설치되어 있는지 체크
