@@ -46,7 +46,7 @@ $ flutter doctor --android-licenses
 ## FVM
 
 flutter version manager  
-[fvm install doc](https://fvm.app/docs/getting_started/installation)
+[fvm install doc](https://fvm.app/documentation/getting-started/installation)
 
 ```shell
 $ brew tap leoafarias/fvm
