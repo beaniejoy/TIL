@@ -89,3 +89,7 @@ Pod 스펙 내에서 인라인으로 정의된다. Pod 내에서 volume 만들�
 왜냐하면 Pod와 Ephemeral Volume은 같은 주기를 가지기 때문
 
 일반적으로 `emptyDir`만 사용해서 기능을 구현하는 것이 유리하다
+
+## References
+
+- [[Kubernetes] Volume - Deep Dive (EmptyDir, HostPath, Network Volume)](https://anggeum.tistory.com/entry/Kubernetes-Volume-Deep-Dive)
