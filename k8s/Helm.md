@@ -7,7 +7,7 @@
 
 <br>
 
-## Helm Chart 기본 구성 요소
+## :pushpin: Helm Chart 기본 구성 요소
 
 - Chart Metadata: Chart의 기본적인 정의
 
@@ -49,10 +49,25 @@ Value, Template을 명시하면 Helm Chart에서 이를 말아서 쿠베 클러�
 
 <br>
 
-## install
+## :pushpin: Install
 
 ```shell
 brew install helm
 
 helm create hello-chart
+```
+
+<br>
+
+## :pushpin: Repo 관리 및 적용
+
+```shell
+# ex. kafka-ui
+helm repo add kafka-ui https://provectus.github.io/kafka-ui-charts
+helm repo list # repo list 확인
+```
+
+```shell
+helm install kafka-ui kafka-ui/kafka-ui
+helm install kafka-ui ./ -f override-values.yaml # custom values 적용시
 ```
